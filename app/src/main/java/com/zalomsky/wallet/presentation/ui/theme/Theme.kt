@@ -1,4 +1,4 @@
-package com.zalomsky.wallet.ui.theme
+package com.zalomsky.wallet.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

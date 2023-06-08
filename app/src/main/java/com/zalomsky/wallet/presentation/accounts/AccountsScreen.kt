@@ -1,15 +1,15 @@
-package com.zalomsky.wallet.presentation
+package com.zalomsky.wallet.presentation.accounts
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun StartScreen(){
+fun AccountsScreen(){
 
     Box(
         modifier = Modifier
@@ -17,7 +17,7 @@ fun StartScreen(){
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "START SCREEN",
+            text = "ACCOUNTS SCREEN",
             color = Color.Black
         )
     }

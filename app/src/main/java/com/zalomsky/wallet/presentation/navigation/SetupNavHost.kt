@@ -1,16 +1,15 @@
 package com.zalomsky.wallet.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.zalomsky.wallet.WalletRoutes
 import com.zalomsky.wallet.presentation.SplashScreen
-import com.zalomsky.wallet.presentation.StartScreen
+import com.zalomsky.wallet.presentation.navigation.bottom.NavigationBottom
 
 @Composable
-fun SetupNavHost() {
-    val navController = rememberNavController()
+fun SetupNavHost(navController: NavHostController) {
 
     NavHost(
         navController = navController,
@@ -19,8 +18,8 @@ fun SetupNavHost() {
         composable(WalletRoutes.SPLASH_SCREEN){
             SplashScreen(navController = navController)
         }
-        composable(WalletRoutes.START_SCREEN){
-           StartScreen()
+        composable(WalletRoutes.BOTTOM_BAR){
+            NavigationBottom()
         }
     }
 }

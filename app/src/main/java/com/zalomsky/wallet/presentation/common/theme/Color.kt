@@ -1,4 +1,4 @@
-package com.zalomsky.wallet.presentation.ui.theme
+package com.zalomsky.wallet.presentation.common.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -5,3 +5,22 @@ import androidx.compose.ui.graphics.toArgb
 
 val grey: Int = Color(0xFF616161).toArgb()
 val blue: Int = Color(0xFF3864FF).toArgb()
+val red: Int = Color(0xFFFF0000).toArgb()
+val green: Int = Color(0xFF008000).toArgb()
+val yellow: Int = Color(0xFFFFFF00).toArgb()
+val purple: Int = Color(0xFF800080).toArgb()
+val aqua: Int = Color(0xFF00FFFF).toArgb()
+val black: Int = Color(0xFF000000).toArgb()
+val pink: Int = Color(0xFFFFC0CB).toArgb()
+val gold: Int = Color(0xFFDAA520).toArgb()
+val orange: Int = Color(0xFFFF8C00).toArgb()
+val lime: Int = Color(0xFF00FF00).toArgb()
+val magenta: Int = Color(0xFFFF00FF).toArgb()
+val deepSkyBlue: Int = Color(0xFF00BFFF).toArgb()
+val lightCoral: Int = Color(0xFFF08080).toArgb()
+
+
+
+val moneyTextColor: Color = Color(0xFF228B22)
+val buttonObjectColor: Color = Color.White
+val buttonBackColor: Color = Color(0xFF228B22)

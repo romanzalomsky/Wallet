@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun OverviewScreen(){
+fun OverviewScreen(
+
+){
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -19,5 +21,6 @@ fun OverviewScreen(){
             text = "OVERVIEW SCREEN",
             color = Color.Black
         )
+
     }
 }

@@ -179,7 +179,7 @@ fun AddAccountScreen(
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
+/*            Text(
                 text = stringResource(id = R.string.name_label),
                 fontSize = 16.sp,
                 fontFamily = splineSansMedium,
@@ -194,6 +194,11 @@ fun AddAccountScreen(
                     .padding(horizontal = 25.dp)
                     .height(56.dp),
                 textStyle = TextStyle(color = Color.Black)
+            )*/
+            NameInputFields(
+                labelText = stringResource(id = R.string.name_label),
+                value = uiState.name,
+                onNewValue = onNameChange
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
@@ -358,3 +363,4 @@ fun NameInputFields(
         textStyle = TextStyle(color = Color.Black)
     )
 }
+

@@ -11,4 +11,5 @@ class AccountRepository @Inject constructor(
     suspend fun insertAccount(account: Account) = accountRepositoryImpl.insertAccount(account = account)
     suspend fun deleteAccount(account: Account) = accountRepositoryImpl.deleteAccount(account = account)
     suspend fun getAccountById(id: Long) = accountRepositoryImpl.getAccountById(accountId = id)
+    suspend fun updateAccount(account: Account) = accountRepositoryImpl.updateAccount(account = account)
 }

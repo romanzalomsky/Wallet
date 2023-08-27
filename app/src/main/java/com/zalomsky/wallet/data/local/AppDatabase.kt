@@ -1,5 +1,6 @@
 package com.zalomsky.wallet.data.local
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.zalomsky.wallet.data.local.dao.AccountRepositoryImpl
@@ -9,8 +10,8 @@ import com.zalomsky.wallet.domain.model.Category
 
 @Database(
     entities = [Account::class, Category::class],
-/*    autoMigrations = [AutoMigration(from = 21, to = 22*//*, spec = AppDatabase.Migration20To21::class*//*)],*/
-    version = 1
+    autoMigrations = [AutoMigration(from = 4, to = 5/*, spec = AppDatabase.Migration1To2::class*/)],
+    version = 5
 )
 abstract class AppDatabase: RoomDatabase() {
 
@@ -18,7 +19,7 @@ abstract class AppDatabase: RoomDatabase() {
 
     abstract fun categoryDao(): CategoryRepositoryImpl
 
-    /*class Migration20To21: AutoMigrationSpec*/
+/*    class Migration1To2: AutoMigrationSpec*/
 
 /*    val MIGRATION_21_22: Migration = object : Migration(21, 22) {
         override fun migrate(database: SupportSQLiteDatabase) {

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.zalomsky.wallet.domain.model.Account
 
 @Dao
@@ -21,4 +22,6 @@ interface AccountRepositoryImpl {
     @Query("SELECT * FROM account WHERE id=:accountId")
     suspend fun getAccountById(accountId: Long): Account
 
+    @Update
+    suspend fun updateAccount(account: Account)
 }

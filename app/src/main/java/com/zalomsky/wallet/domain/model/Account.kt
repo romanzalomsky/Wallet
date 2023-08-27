@@ -12,6 +12,9 @@ data class Account(
     val name: String,
     val balance: Double,
 
+    @ColumnInfo(name = "description", defaultValue = "")
+    val description: String,
+
     @ColumnInfo(name = "icon", defaultValue = "")
     val icon: Int,
 

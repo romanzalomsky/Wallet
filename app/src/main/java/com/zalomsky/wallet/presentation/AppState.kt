@@ -26,27 +26,42 @@ import com.zalomsky.wallet.presentation.common.icons.cashIcon3
 import com.zalomsky.wallet.presentation.common.icons.cashIcon4
 import com.zalomsky.wallet.presentation.common.icons.cashIcon5
 import com.zalomsky.wallet.presentation.common.icons.cashIcon6
+import com.zalomsky.wallet.presentation.common.icons.familyCategoryIcon
+import com.zalomsky.wallet.presentation.common.icons.groceriesCategoryIcon
+import com.zalomsky.wallet.presentation.common.icons.healthCategoryIcon
+import com.zalomsky.wallet.presentation.common.icons.restaurantCategoryIcon
+import com.zalomsky.wallet.presentation.common.icons.shoppingCategoryIcon
+import com.zalomsky.wallet.presentation.common.icons.sportCategoryIcon
+import com.zalomsky.wallet.presentation.common.icons.transportCategoryIcon
 
 class AppState {
 
     companion object {
 
-        const val accountsScreenTitle = "accounts"
-        const val addAccountScreenTitle = "add account"
+        const val accountsScreenTitle = "Accounts"
+        const val newAccountScreenTitle = "new account"
         const val editAccountScreenTitle = "edit account"
 
-        const val categoriesScreenTitle = "categories"
+        const val categoriesScreenTitle = "Categories"
         const val addCategoryScreenTitle = "add category"
 
     }
+
 }
 
-val listOfIcons = listOf(cardIcon, cardIcon2, cardIcon3,
+val listOfAccountsIcons = listOf(cardIcon, cardIcon2, cardIcon3,
                         cardIcon4, cardIcon5, cashIcon,
                         cashIcon2, cashIcon3, cashIcon4, cashIcon5, cashIcon6)
+
 val listOfColors = listOf(grey, blue, red, yellow, green,
                           purple, aqua, black, pink, gold,
                           orange, lime, magenta, deepSkyBlue, lightCoral)
+
+val listOfCategoryIcons = listOf(
+    transportCategoryIcon, groceriesCategoryIcon, healthCategoryIcon,
+    shoppingCategoryIcon, familyCategoryIcon, restaurantCategoryIcon,
+    sportCategoryIcon
+)
 
 val dollar = "$"
 val euro = "E"

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.domain.usecase.DeleteAccountUseCase
 import com.zalomsky.wallet.domain.usecase.GetAccountByIdUseCase
+import com.zalomsky.wallet.domain.usecase.UpdateAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,7 +16,8 @@ import javax.inject.Inject
 class EditAccountScreenViewModel @Inject constructor(
 
     private val getAccountByIdUseCase: GetAccountByIdUseCase,
-    private val deleteAccountUseCase: DeleteAccountUseCase
+    private val deleteAccountUseCase: DeleteAccountUseCase,
+    private val updateAccountUseCase: UpdateAccountUseCase
 ): ViewModel() {
 
     private val _account = MutableLiveData<Account>()
@@ -36,6 +38,13 @@ class EditAccountScreenViewModel @Inject constructor(
                 deleteAccountUseCase.invoke(account = it)
                 onSuccess()
             }
+        }
+    }
+
+    fun updateAccounts(account: Account, onSuccess: () -> Unit){
+        viewModelScope.launch {
+            updateAccountUseCase.invoke(account = account)
+            onSuccess()
         }
     }
 }

@@ -2,8 +2,8 @@ package com.zalomsky.wallet.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,17 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.zalomsky.wallet.Destinations
+import com.zalomsky.wallet.BottomDestinations
 import com.zalomsky.wallet.presentation.common.color.buttonBackColor
 import com.zalomsky.wallet.presentation.common.color.buttonObjectColor
-import com.zalomsky.wallet.presentation.common.color.moneyTextColor
-import com.zalomsky.wallet.presentation.common.fonts.splineSansLight
+import com.zalomsky.wallet.presentation.common.fonts.rubikMedium
 import com.zalomsky.wallet.presentation.common.icons.hiddenListIcon
 
 @Composable
 fun BottomNavigationBar(
-    allScreens: List<Destinations>,
-    onTabSelected: (Destinations) -> Unit,
+    allScreens: List<BottomDestinations>,
+    onTabSelected: (BottomDestinations) -> Unit,
     modifier: Modifier = Modifier,
     navController: NavController,
 ){
@@ -57,13 +56,13 @@ fun BottomNavigationBar(
             BottomNavigationItem(
                 selected = selected,
                 onClick = { onTabSelected(screen) },
-                selectedContentColor = Color(0xFF3CB371),
+                selectedContentColor = Color(0xFF0B9AFA),
                 unselectedContentColor = Color.Gray,
                 label = {
                     Text(
-                        text = screen.route.uppercase(),
-                        fontSize = 8.sp,
-                        fontFamily = splineSansLight
+                        text = screen.route,
+                        fontSize = 10.sp,
+                        fontFamily = rubikMedium
                     )
                 },
                 icon = {
@@ -78,7 +77,7 @@ fun BottomNavigationBar(
                                 painter = painterResource(id = screen.icon),
                                 contentDescription = screen.route,
                                 modifier = Modifier
-                                    .size(27.dp)
+                                    .size(23.dp)
                             )
                         }
                     }
@@ -99,14 +98,11 @@ fun TopNavigationBar(
             .fillMaxWidth()
             .height(50.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+        Row{
             Box(
                 modifier = Modifier
                     .padding(horizontal = 15.dp)
-                    .padding(top = 15.dp)
+                    .padding(top = 10.dp)
             ){
                 Icon(
                     painter = painterResource(id = hiddenListIcon),
@@ -144,17 +140,27 @@ fun CustomIcon(
 fun ScreenHeader(
     title: String
 ){
-    Box{
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Spacer(modifier = Modifier.width(15.dp))
-            Text(
-                text = title.uppercase(),
-                color = moneyTextColor,
-                fontFamily = splineSansLight
-            )
+    Box(
+     modifier = Modifier
+         .height(120.dp)
+         .background(
+             color = Color.White
+         )
+    ){
+        Column {
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Spacer(modifier = Modifier.width(30.dp))
+                Text(
+                    text = title,
+                    color = Color.Black,
+                    fontFamily = rubikMedium,
+                    fontSize = 23.sp
+                )
+            }
         }
     }
 }

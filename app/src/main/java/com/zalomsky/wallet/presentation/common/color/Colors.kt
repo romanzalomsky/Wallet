@@ -19,8 +19,12 @@ val magenta: Int = Color(0xFFFF00FF).toArgb()
 val deepSkyBlue: Int = Color(0xFF00BFFF).toArgb()
 val lightCoral: Int = Color(0xFFF08080).toArgb()
 
-
+val editBackgroundColor: Int = Color(0xFFE9E8E8).toArgb()
 
 val moneyTextColor: Color = Color(0xFF228B22)
 val buttonObjectColor: Color = Color.White
-val buttonBackColor: Color = Color(0xFF228B22)
+val buttonBackColor: Color = Color(0xFF329932)
+
+val systemColor: Color = Color(0xFF0B9AFA)
+val backgroundColor: Color = Color(0xFFFDFDFD)
+val backgroundColor2: Color = Color(0xFFF5F5F5)

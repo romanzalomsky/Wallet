@@ -9,6 +9,7 @@ val hiddenListIcon = R.drawable.menu
 val cross = R.drawable.cross
 val arrowBack = R.drawable.arrowback
 val agree = Icons.Rounded.Check
+val upArrow = R.drawable.uparrow
 
 val accountsIcon = R.drawable.account
 val categoriesIcon = R.drawable.category
@@ -28,4 +29,10 @@ val cashIcon4 = R.drawable.cash4
 val cashIcon5 = R.drawable.cash5
 val cashIcon6 = R.drawable.cash6
 
-
+val transportCategoryIcon = R.drawable.bus
+val groceriesCategoryIcon = R.drawable.grocery
+val healthCategoryIcon = R.drawable.cardiogram
+val shoppingCategoryIcon = R.drawable.shoppingbag
+val familyCategoryIcon = R.drawable.family
+val restaurantCategoryIcon = R.drawable.meal
+val sportCategoryIcon = R.drawable.sport

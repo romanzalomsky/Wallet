@@ -1,5 +1,6 @@
 package com.zalomsky.wallet.domain.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,5 +12,9 @@ data class Category(
 
     val name: String,
     val icon: Int,
+
+    @ColumnInfo(name = "circleColor", defaultValue = "1")
+    val circleColor: Int,
+
     val amount: Double
 )

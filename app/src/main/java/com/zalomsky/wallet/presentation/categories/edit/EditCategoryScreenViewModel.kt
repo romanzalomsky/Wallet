@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.model.Category
 import com.zalomsky.wallet.domain.usecase.DeleteCategoryUseCase
 import com.zalomsky.wallet.domain.usecase.GetCategoryByIdUseCase
+import com.zalomsky.wallet.domain.usecase.UpdateCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,7 +16,8 @@ import javax.inject.Inject
 class EditCategoryScreenViewModel @Inject constructor(
 
     private val getCategoryByIdUseCase: GetCategoryByIdUseCase,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val updateCategoryUseCase: UpdateCategoryUseCase
 ): ViewModel(){
 
     private val _category = MutableLiveData<Category>()
@@ -37,6 +39,13 @@ class EditCategoryScreenViewModel @Inject constructor(
                 deleteCategoryUseCase.invoke(category = it)
                 onSuccess()
             }
+        }
+    }
+
+    fun updateCategory(category: Category, onSuccess: () -> Unit){
+        viewModelScope.launch {
+            updateCategoryUseCase.invoke(category = category)
+            onSuccess()
         }
     }
 }

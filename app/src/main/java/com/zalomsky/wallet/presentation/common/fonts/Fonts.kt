@@ -9,3 +9,10 @@ val splineSansLight = FontFamily(Font(R.font.splinesanslight))
 val splineSansMedium = FontFamily(Font(R.font.splinesansmedium))
 val splineSansRegular = FontFamily(Font(R.font.splinesansregular))
 val splineSansBold = FontFamily(Font(R.font.splinesansbold))
+
+val aksharLight = FontFamily(Font(R.font.aqksharlight))
+val aksharMedium = FontFamily(Font(R.font.aksharmedium))
+val aksharBold = FontFamily(Font(R.font.aksharbold))
+
+val rubikMedium = FontFamily(Font(R.font.rubikmedium))
+val rubikLight = FontFamily(Font(R.font.rubiklight))

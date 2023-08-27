@@ -14,9 +14,9 @@ import com.zalomsky.wallet.AddCategory
 import com.zalomsky.wallet.Categories
 import com.zalomsky.wallet.Edit
 import com.zalomsky.wallet.EditCategory
-import com.zalomsky.wallet.HiddenList
 import com.zalomsky.wallet.Overview
 import com.zalomsky.wallet.Transactions
+import com.zalomsky.wallet.presentation.SplashScreen
 import com.zalomsky.wallet.presentation.accounts.AccountsScreen
 import com.zalomsky.wallet.presentation.accounts.add.AddAccountScreen
 import com.zalomsky.wallet.presentation.accounts.edit.EditAccountScreen
@@ -36,16 +36,16 @@ fun WalletNavHost(
         startDestination = Categories.route,
         modifier = modifier
     ) {
-/*        composable(route = "splash"){
+        composable(route = "splash"){
             SplashScreen(navController = navController)
-        }*/
+        }
         composable(route = Accounts.route) {
             AccountsScreen(
                 navController = navController
             )
         }
         composable(route = Add.route) {
-            AddAccountScreen(navController = navController)
+            AddAccountScreen(navController = navController, onNameChange = {})
         }
         composable(route = Edit.route + "/{id}", arguments = listOf(navArgument("id") {type = NavType.StringType})){
             EditAccountScreen(navController = navController, it.arguments?.getString("id"))
@@ -62,9 +62,6 @@ fun WalletNavHost(
             EditCategoryScreen(navController = navController, it.arguments?.getString("id") )
         }
         composable(route = Overview.route) {
-            OverviewScreen()
-        }
-        composable(route = HiddenList.route){
             OverviewScreen()
         }
         composable(route = Transactions.route) {

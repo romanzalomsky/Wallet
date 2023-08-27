@@ -11,4 +11,5 @@ class CategoryRepository @Inject constructor(
     suspend fun insertCategory(category: Category) = categoryRepositoryImpl.insertCategory(category = category)
     suspend fun deleteCategory(category: Category) = categoryRepositoryImpl.deleteCategory(category = category)
     suspend fun getCategoryById(id: Long) = categoryRepositoryImpl.getCategoryById(categoryId = id)
+    suspend fun updateCategory(category: Category) = categoryRepositoryImpl.updateCategory(category = category)
 }

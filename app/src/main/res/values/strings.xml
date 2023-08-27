@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Wallet</string>
+
+    <!-- Headers -->
+    <string name="add_card_header">Add Card</string>
+    <string name="your_credit_card_header">Your Credit Cards</string>
+    <string name="your_accounts_header">Your Accounts</string>
+    <string name="account_header">ACCOUNT</string>
+    <string name="balance_header">BALANCE</string>
+    <string name="on_value_change_header">ON VALUE CHANGE</string>
+
+    <!-- Labels -->
+    <string name="name_label">Name</string>
+    <string name="description_label">Description</string>
+    <string name="balance_label">Balance</string>
+    <string name="your_current_card_label">Your current card</string>
+
+    <!-- Beauty -->
+    <string name="dots_beauty">. . .</string>
+
+    <!-- Buttons -->
+    <string name="delete_account_button">DELETE ACCOUNT</string>
+
 </resources>

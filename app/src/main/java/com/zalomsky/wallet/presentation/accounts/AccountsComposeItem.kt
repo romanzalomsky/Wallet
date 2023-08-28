@@ -23,7 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.presentation.common.fonts.splineSansBold
@@ -36,8 +35,8 @@ fun AccountCard(
     description: String,
     icon: Int,
     iconColor: Int,
-    account: Account,
-    navController: NavController,
+    account: Account
+/*    navController: NavController,*/
 ){
     Card(
         backgroundColor = Color(iconColor),
@@ -46,7 +45,7 @@ fun AccountCard(
             .width(300.dp)
             .padding(horizontal = 25.dp)
             .clickable {
-                navController.navigate(route = "editScreen" + "/${account.id}")
+                /*navController.navigate(route = "editScreen" + "/${account.id}")*/
             },
         elevation = 0.dp,
         shape = RoundedCornerShape(17.dp)

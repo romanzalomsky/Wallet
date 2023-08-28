@@ -10,6 +10,8 @@ val cross = R.drawable.cross
 val arrowBack = R.drawable.arrowback
 val agree = Icons.Rounded.Check
 val upArrow = R.drawable.uparrow
+val downArrow = R.drawable.downarrow
+val downArrowMini = R.drawable.downarrowmini
 
 val accountsIcon = R.drawable.account
 val categoriesIcon = R.drawable.category

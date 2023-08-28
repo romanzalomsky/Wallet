@@ -31,10 +31,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.zalomsky.wallet.domain.model.Category
-import com.zalomsky.wallet.presentation.AppState
-import com.zalomsky.wallet.presentation.ScreenHeader
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.buttonObjectColor
 import com.zalomsky.wallet.presentation.common.color.systemColor
@@ -42,9 +39,7 @@ import com.zalomsky.wallet.presentation.common.fonts.aksharMedium
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun CategoriesScreen(
-    navController: NavController
-){
+fun CategoriesScreen(){
 
     val viewModel = hiltViewModel<CategoriesScreenViewModel>()
     val categories = viewModel.categories.observeAsState(listOf()).value
@@ -53,7 +48,7 @@ fun CategoriesScreen(
         backgroundColor = backgroundColor,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(route = "addCategoryScreen") },
+                onClick = { /*navController.navigate(route = "addCategoryScreen")*/ },
                 backgroundColor = systemColor
             ) {
                 Icon(
@@ -69,7 +64,6 @@ fun CategoriesScreen(
             .fillMaxSize()
     ) {
         Column {
-            ScreenHeader(title = AppState.categoriesScreenTitle)
             Row {
                 Spacer(modifier = Modifier.width(10.dp))
                 LazyRow(
@@ -82,7 +76,7 @@ fun CategoriesScreen(
                             amount = category.amount,
                             category = category,
                             circleColor = category.circleColor,
-                            navController = navController
+/*                            navController = navController*/
                         )
                     }
                 }
@@ -110,7 +104,7 @@ fun CategoryCard(
     amount: Double,
     category: Category,
     circleColor: Int,
-    navController: NavController
+/*    navController: NavController*/
 ){
     Card(
         modifier = Modifier
@@ -138,7 +132,7 @@ fun CategoryCard(
                     }
                     .background(Color(circleColor))
                     .clickable {
-                        navController.navigate(route = "editCategoryScreen" + "/${category.id}")
+                        /*navController.navigate(route = "editCategoryScreen" + "/${category.id}")*/
                     }
             ){
                 Icon(

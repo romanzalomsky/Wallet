@@ -1,5 +1,7 @@
 package com.zalomsky.wallet.presentation
 
+import androidx.compose.material.ScaffoldState
+import androidx.navigation.NavHostController
 import com.zalomsky.wallet.presentation.common.color.aqua
 import com.zalomsky.wallet.presentation.common.color.black
 import com.zalomsky.wallet.presentation.common.color.blue
@@ -34,7 +36,7 @@ import com.zalomsky.wallet.presentation.common.icons.shoppingCategoryIcon
 import com.zalomsky.wallet.presentation.common.icons.sportCategoryIcon
 import com.zalomsky.wallet.presentation.common.icons.transportCategoryIcon
 
-class AppState {
+class AppState(scaffoldState: ScaffoldState, navController: NavHostController) {
 
     companion object {
 

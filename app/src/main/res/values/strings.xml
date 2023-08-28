@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Wallet</string>
 
+    <!-- Tabs -->
+    <string name="accounts">Accounts</string>
+    <string name="categories">Categories</string>
+    <string name="transactions">Transactions</string>
+    <string name="overview">Overview</string>
+
+
     <!-- Headers -->
     <string name="add_card_header">Add Card</string>
     <string name="your_credit_card_header">Your Credit Cards</string>
@@ -14,11 +21,13 @@
     <string name="description_label">Description</string>
     <string name="balance_label">Balance</string>
     <string name="your_current_card_label">Your current card</string>
+    <string name="current_value_label">Current value</string>
 
     <!-- Beauty -->
     <string name="dots_beauty">. . .</string>
 
     <!-- Buttons -->
     <string name="delete_account_button">DELETE ACCOUNT</string>
+    <string name="create_account_button">CREATE ACCOUNT</string>
 
 </resources>

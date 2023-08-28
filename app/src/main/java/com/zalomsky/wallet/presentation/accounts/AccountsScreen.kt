@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.buttonObjectColor
@@ -36,9 +35,7 @@ import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AccountsScreen(
-    navController: NavHostController
-){
+fun AccountsScreen(){
     val viewModel: AccountsScreenViewModel = hiltViewModel()
     val accounts = viewModel.accounts.observeAsState(listOf()).value
 
@@ -46,7 +43,7 @@ fun AccountsScreen(
         backgroundColor = backgroundColor,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(route = "addScreen") },
+                onClick = {/* navController.navigate(route = "addScreen")*/ },
                 backgroundColor = systemColor
             ) {
                 Icon(
@@ -75,8 +72,8 @@ fun AccountsScreen(
                         account = account,
                         description = account.description,
                         icon = account.icon,
-                        iconColor = account.iconColor,
-                        navController = navController
+                        iconColor = account.iconColor
+/*                        navController = navController*/
                     )
                 }
             }

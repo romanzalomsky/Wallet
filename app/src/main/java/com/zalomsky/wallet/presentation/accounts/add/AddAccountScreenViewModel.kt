@@ -27,6 +27,30 @@ class AddAccountScreenViewModel @Inject constructor(
         }
     }
 
+    fun onDescriptionChange(newValue: String){
+        _uiState.update { currentState ->
+            currentState.copy(description = newValue)
+        }
+    }
+
+    fun onBalanceChange(newValue: Double){
+        _uiState.update { currentState ->
+            currentState.copy(balance = newValue)
+        }
+    }
+
+    fun onIconChange(newValue: Int){
+        _uiState.update { currentState ->
+            currentState.copy(icon = newValue)
+        }
+    }
+
+    fun onIconColor(newValue: Int){
+        _uiState.update { currentState ->
+            currentState.copy(iconColor = newValue)
+        }
+    }
+
     fun addAccount(account: Account, onSuccess: () -> Unit){
         viewModelScope.launch {
             addAccountUseCase.invoke(account = account)

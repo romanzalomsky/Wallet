@@ -1,119 +1,166 @@
 package com.zalomsky.wallet.presentation.accounts
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.FloatingActionButton
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zalomsky.wallet.R
+import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
-import com.zalomsky.wallet.presentation.common.color.buttonObjectColor
-import com.zalomsky.wallet.presentation.common.color.systemColor
+import com.zalomsky.wallet.presentation.common.fonts.splineSansLight
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AccountsScreen(){
+fun AccountsScreen(
+    onAccountAdd: () -> Unit
+){
     val viewModel: AccountsScreenViewModel = hiltViewModel()
     val accounts = viewModel.accounts.observeAsState(listOf()).value
 
     Scaffold(
-        backgroundColor = backgroundColor,
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {/* navController.navigate(route = "addScreen")*/ },
-                backgroundColor = systemColor
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Add,
-                    contentDescription = "",
-                    tint = buttonObjectColor,
-                    modifier = Modifier
-                        .size(40.dp)
-                )
-            }
+        topBar = {
+            AccountsTopBar(onAccountAdd)
         },
+        backgroundColor = backgroundColor,
         modifier = Modifier
             .fillMaxSize()
     ){
         Column {
-            AccountsHeader(label = stringResource(id = R.string.your_credit_card_header))
-            AccountLabel(label = stringResource(id = R.string.your_current_card_label))
-            LazyRow(
-                horizontalArrangement = Arrangement.Center,
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(accounts){account ->
-                    AccountCard(
-                        name = account.name,
-                        balance = account.balance,
-                        account = account,
-                        description = account.description,
-                        icon = account.icon,
-                        iconColor = account.iconColor
-/*                        navController = navController*/
-                    )
+                items(accounts){item ->
+                    AccountListItem(account = item, /*onAccountClicked = {}*/)
                 }
             }
-            AccountsHeader(label = stringResource(id = R.string.your_accounts_header))
         }
     }
 }
 
 @Composable
-fun AccountsHeader(
-    label: String
+fun AccountListItem(
+    account: Account,
 ) {
-    Spacer(modifier = Modifier.height(10.dp))
-    Text(
-        text = label,
-        fontFamily = splineSansMedium,
-        fontSize = 22.sp,
-        modifier = Modifier
-            .padding(horizontal = 25.dp)
-    )
-    Spacer(modifier = Modifier.height(15.dp))
+    val paddingModifier = Modifier.padding(10.dp)
+    Card(
+        elevation = 1.dp,
+        border = BorderStroke(1.dp, Color(account.iconColor)),
+        modifier = paddingModifier
+            .width(355.dp)
+            .height(70.dp)
+            .clickable { }
+        /*navController.navigate(route = "editScreen" + "/${account.id}")*/
+    ) {
+        Row {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .size(45.dp)
+                    .graphicsLayer {
+                        clip = true
+                        shape = CircleShape
+                    }
+                    .background(Color(account.iconColor))
+            ){
+                Icon(
+                    painter = painterResource(id = account.icon),
+                    contentDescription = "",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(25.dp)
+                )
+            }
+            Column {
+                Text(
+                    text = account.name,
+                    fontFamily = splineSansMedium,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+                Text(
+                    text = account.balance.toString() + " $",
+                    fontFamily = splineSansMedium,
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    text = account.description,
+                    fontFamily = splineSansLight,
+                    fontStyle = FontStyle.Italic,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(22.dp)
+                )
+            }
+        }
+    }
 }
 
 @Composable
-fun AccountLabel(
-    label: String
+fun AccountsTopBar(
+    onAccountAdd: () -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
+    TopAppBar(
+        backgroundColor = Color.White
+    ){
+        IconButton(
+            onClick = {  },
         ) {
-            Text(
-                text = label,
-                fontFamily = splineSansMedium,
-                fontSize = 18.sp
+            Icon(
+                imageVector = Icons.Outlined.Menu,
+                contentDescription = "Menu icon",
+                tint = Color.Gray,
+                modifier = Modifier.size(25.dp)
             )
         }
+        Text(
+            text = "Accounts",
+            fontFamily = splineSansMedium,
+            fontSize = 20.sp,
+            color = Color.Black
+        )
+        Spacer(Modifier.weight(1f, true))
+        IconButton(onClick = onAccountAdd ) {
+            Icon(Icons.Filled.Add, contentDescription = "Add", modifier = Modifier.size(30.dp))
+        }
     }
 }
+

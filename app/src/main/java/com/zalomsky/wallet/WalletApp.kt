@@ -16,6 +16,9 @@ fun WalletApp() {
         val appState = rememberWalletAppState()
 
         Scaffold(
+            topBar = {
+
+            },
             bottomBar = {
                 if(appState.shouldShowBottomBar){
                     WalletBottomBar(
@@ -31,7 +34,10 @@ fun WalletApp() {
                 navController = appState.navController,
                 startDestination = MainDestinations.HOME_ROUTE
             ){
-                walletNavGraph()
+                walletNavGraph(
+                    navController = appState.navController,
+                    upPress = appState::upPress
+                )
             }
         }
     }

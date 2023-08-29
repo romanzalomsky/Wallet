@@ -10,7 +10,9 @@ import com.zalomsky.wallet.presentation.common.icons.transactionsIcon
 object MainDestinations {
 
     const val HOME_ROUTE = "home"
+    const val ACCOUNT_ROUTE = "account"
 
+    const val ADD_ACCOUNT_ROUTE = "add_account"
 }
 
 enum class HomeSections(

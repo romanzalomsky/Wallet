@@ -2,7 +2,6 @@ package com.zalomsky.wallet.presentation.accounts.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.domain.usecase.AddAccountUseCase
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,38 +22,57 @@ class AddAccountScreenViewModel @Inject constructor(
 
     fun onNameChange(newValue: String){
         _uiState.update { currentState ->
-            currentState.copy(name = newValue)
+            currentState.copy(account = currentState.account.copy(name = newValue))
         }
     }
 
     fun onDescriptionChange(newValue: String){
         _uiState.update { currentState ->
-            currentState.copy(description = newValue)
+            currentState.copy(account = currentState.account.copy(description = newValue))
         }
     }
 
     fun onBalanceChange(newValue: Double){
         _uiState.update { currentState ->
-            currentState.copy(balance = newValue)
+            currentState.copy(account = currentState.account.copy(balance = newValue))
         }
     }
 
     fun onIconChange(newValue: Int){
         _uiState.update { currentState ->
-            currentState.copy(icon = newValue)
+            currentState.copy(account = currentState.account.copy(icon = newValue))
         }
     }
 
     fun onIconColor(newValue: Int){
         _uiState.update { currentState ->
-            currentState.copy(iconColor = newValue)
+            currentState.copy(account = currentState.account.copy(iconColor = newValue))
         }
     }
 
-    fun addAccount(account: Account, onSuccess: () -> Unit){
+    fun addAccount(onAccountAdded: () -> Unit){
+        viewModelScope.launch {
+            addAccountUseCase(uiState.value.account)
+                .runCatching{
+                    onAccountAdded()
+                }
+        }
+    }
+
+/*    fun onEvent(event: AccountEvent){
+        when (event) {
+            is AccountEvent.Add -> addAccount(event.onAdded)
+        }
+    }*/
+
+/*    fun addAccount(account: Account, onSuccess: () -> Unit){
         viewModelScope.launch {
             addAccountUseCase.invoke(account = account)
             onSuccess()
         }
-    }
+    }*/
+}
+
+sealed interface AccountEvent {
+    data class Add(val onAdded: () -> Unit) : AccountEvent
 }

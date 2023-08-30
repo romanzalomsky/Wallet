@@ -45,7 +45,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.presentation.common.color.buttonBackColor
@@ -61,7 +60,7 @@ import com.zalomsky.wallet.presentation.listOfColors
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun EditAccountScreen(
-    navController: NavHostController,
+    onAccountEdited: () -> Unit,
     id: String?
 ){
     var name by remember { mutableStateOf("") }
@@ -81,7 +80,7 @@ fun EditAccountScreen(
         backgroundColor = Color(editBackgroundColor),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(route = "Accounts") },
+                onClick = onAccountEdited,
                 backgroundColor = buttonBackColor
             ) {
                 Icon(
@@ -101,7 +100,7 @@ fun EditAccountScreen(
                                     iconColor = iconColor.toInt()
                                 )
                             ) {
-                                navController.navigate(route = "Accounts")
+
                             }
                         }
                 )
@@ -342,9 +341,7 @@ fun EditAccountScreen(
                             color = Color.Red,
                             modifier = Modifier
                                 .clickable{
-                                    viewModel.deleteAccounts {
-                                        navController.navigate(route = "Accounts")
-                                    }
+                                    viewModel.deleteAccounts(onSuccess = {})
                                 }
                         )
                     }

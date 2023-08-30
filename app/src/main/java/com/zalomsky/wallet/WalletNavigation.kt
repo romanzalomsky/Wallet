@@ -9,7 +9,9 @@ import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.zalomsky.wallet.presentation.accounts.AccountsScreen
 import com.zalomsky.wallet.presentation.accounts.addAccountScreen
+import com.zalomsky.wallet.presentation.accounts.editAccountScreen
 import com.zalomsky.wallet.presentation.accounts.navigateToAddAccountScreen
+import com.zalomsky.wallet.presentation.accounts.navigateToEditAccountScreen
 import com.zalomsky.wallet.presentation.categories.CategoriesScreen
 import com.zalomsky.wallet.presentation.overview.OverviewScreen
 import com.zalomsky.wallet.presentation.transactions.TransactionsScreen
@@ -23,7 +25,12 @@ fun NavGraphBuilder.walletNavGraph(
         startDestination = HomeSections.CATEGORIES.route,
     ){
         bottomRoutes(navController = navController)
-        addAccountScreen(onBackPressed = upPress)
+        addAccountScreen(
+            onBackPressed = upPress
+        )
+        editAccountScreen {
+            /*onBackPressed = upPress*/
+        }
     }
 }
 
@@ -35,6 +42,9 @@ fun NavGraphBuilder.bottomRoutes(
         AccountsScreen(
             onAccountAdd = {
                 navController.navigateToAddAccountScreen()
+            },
+            onAccountEdit = {
+                navController.navigateToEditAccountScreen()
             }
         )
     }

@@ -1,7 +1,6 @@
 package com.zalomsky.wallet.presentation.accounts
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -31,8 +30,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -40,13 +39,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
+import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansLight
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AccountsScreen(
-    onAccountAdd: () -> Unit
+    onAccountAdd: () -> Unit,
+    onAccountEdit: () -> Unit
 ){
     val viewModel: AccountsScreenViewModel = hiltViewModel()
     val accounts = viewModel.accounts.observeAsState(listOf()).value
@@ -60,12 +61,13 @@ fun AccountsScreen(
             .fillMaxSize()
     ){
         Column {
+            Spacer(modifier = Modifier.height(10.dp))
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(accounts){item ->
-                    AccountListItem(account = item, /*onAccountClicked = {}*/)
+                    AccountListItem(account = item, onAccountEdit = onAccountEdit)
                 }
             }
         }
@@ -75,15 +77,16 @@ fun AccountsScreen(
 @Composable
 fun AccountListItem(
     account: Account,
+    onAccountEdit: () -> Unit
 ) {
-    val paddingModifier = Modifier.padding(10.dp)
+    val paddingModifier = Modifier.padding(3.dp)
     Card(
-        elevation = 1.dp,
-        border = BorderStroke(1.dp, Color(account.iconColor)),
+        elevation = 0.dp,
         modifier = paddingModifier
             .width(355.dp)
             .height(70.dp)
-            .clickable { }
+            .clip(RoundedCornerShape(20.dp))
+            .clickable (onClick = onAccountEdit)
         /*navController.navigate(route = "editScreen" + "/${account.id}")*/
     ) {
         Row {
@@ -92,10 +95,7 @@ fun AccountListItem(
                 modifier = Modifier
                     .padding(10.dp)
                     .size(45.dp)
-                    .graphicsLayer {
-                        clip = true
-                        shape = CircleShape
-                    }
+                    .clip(RoundedCornerShape(15.dp))
                     .background(Color(account.iconColor))
             ){
                 Icon(
@@ -111,10 +111,12 @@ fun AccountListItem(
                     text = account.name,
                     fontFamily = splineSansMedium,
                     fontSize = 20.sp,
+                    color = systemTextColor,
                     modifier = Modifier.padding(top = 10.dp)
                 )
                 Text(
                     text = account.balance.toString() + " $",
+                    color = systemTextColor,
                     fontFamily = splineSansMedium,
                 )
             }
@@ -155,7 +157,7 @@ fun AccountsTopBar(
             text = "Accounts",
             fontFamily = splineSansMedium,
             fontSize = 20.sp,
-            color = Color.Black
+            color = systemTextColor,
         )
         Spacer(Modifier.weight(1f, true))
         IconButton(onClick = onAccountAdd ) {

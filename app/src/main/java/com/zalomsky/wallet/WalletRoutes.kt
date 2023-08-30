@@ -13,6 +13,7 @@ object MainDestinations {
     const val ACCOUNT_ROUTE = "account"
 
     const val ADD_ACCOUNT_ROUTE = "add_account"
+    const val EDIT_ACCOUNT_ROUTE = "edit_account"
 }
 
 enum class HomeSections(

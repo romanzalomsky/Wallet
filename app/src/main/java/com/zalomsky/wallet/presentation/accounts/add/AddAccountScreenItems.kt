@@ -1,6 +1,5 @@
 package com.zalomsky.wallet.presentation.accounts.add
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,14 +18,9 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -48,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zalomsky.wallet.presentation.common.color.buttonBackColor
 import com.zalomsky.wallet.presentation.common.color.systemColor
+import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 import com.zalomsky.wallet.presentation.common.icons.downArrow
 import com.zalomsky.wallet.presentation.common.icons.downArrowMini
@@ -67,6 +62,7 @@ fun NameInputFields(
         Text(
             text = labelText,
             fontSize = 16.sp,
+            color = systemTextColor,
             fontFamily = splineSansMedium,
             modifier = labelModifier
                 .padding(horizontal = 15.dp)
@@ -87,7 +83,7 @@ fun NameInputFields(
                 cursorColor = Color.Black,
                 backgroundColor = Color.White,
                 unfocusedBorderColor = Color.LightGray,
-                focusedBorderColor = Color.LightGray
+                focusedBorderColor = systemColor
             )
         )
     }
@@ -105,6 +101,7 @@ fun DescriptionInputFields(
         Text(
             text = labelText,
             fontSize = 16.sp,
+            color = systemTextColor,
             fontFamily = splineSansMedium,
             modifier = labelModifier
                 .padding(horizontal = 15.dp)
@@ -125,7 +122,7 @@ fun DescriptionInputFields(
                 cursorColor = Color.Black,
                 backgroundColor = Color.White,
                 unfocusedBorderColor = Color.LightGray,
-                focusedBorderColor = Color.LightGray
+                focusedBorderColor = systemColor
             )
         )
     }
@@ -136,20 +133,21 @@ fun BalanceInputFields(
     labelText: String,
     labelModifier: Modifier = Modifier,
     textFieldModifier: Modifier = Modifier,
-    value: String,
-    onNewValue: (String) -> Unit
+    value: Double,
+    onNewValue: (Double) -> Unit
 ) {
     Column {
         Text(
             text = labelText,
             fontSize = 16.sp,
+            color = systemTextColor,
             fontFamily = splineSansMedium,
             modifier = labelModifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
-            value = value,
-            onValueChange = onNewValue,
+            value = value.toString(),   //??????
+            onValueChange = { onNewValue.toString() }, //??????
             modifier = textFieldModifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
@@ -163,7 +161,7 @@ fun BalanceInputFields(
                 cursorColor = Color.Black,
                 backgroundColor = Color.White,
                 unfocusedBorderColor = Color.LightGray,
-                focusedBorderColor = Color.LightGray
+                focusedBorderColor = systemColor
             )
         )
     }
@@ -190,6 +188,7 @@ fun ValueDropDown(
                 Text(
                     text = label,
                     fontSize = 16.sp,
+                    color = systemTextColor,
                     fontFamily = splineSansMedium
                 )
                 Icon(
@@ -323,11 +322,14 @@ fun ConfirmButton(
     }
 }
 
+/*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddAccountTopBar(
     upPress: () -> Unit,
-    /*    onAccountAdd: (Account) -> Unit*/
+    */
+/*    onAccountAdd: (Account) -> Unit*//*
+
 ) {
     TopAppBar(
         backgroundColor = Color.White
@@ -346,11 +348,13 @@ fun AddAccountTopBar(
             text = "Add Account",
             fontFamily = splineSansMedium,
             fontSize = 20.sp,
-            color = Color.Black
+            color = systemTextColor
         )
         Spacer(Modifier.weight(1f, true))
         IconButton(
-            onClick = {}/*onAccountAdd()*/,
+            onClick = {}*/
+/*onAccountAdd()*//*
+,
         ) {
             Icon(
                 imageVector = Icons.Outlined.Check,
@@ -361,6 +365,7 @@ fun AddAccountTopBar(
         }
     }
 }
+*/
 
 
 @OptIn(ExperimentalMaterial3Api::class)

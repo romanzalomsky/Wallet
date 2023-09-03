@@ -110,7 +110,7 @@ fun AccountListItem(
             ){
                 Icon(
                     painter = painterResource(id = account.icon),
-                    contentDescription = "",
+                    contentDescription = " ",
                     tint = Color.White,
                     modifier = Modifier
                         .size(25.dp)

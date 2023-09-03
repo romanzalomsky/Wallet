@@ -3,6 +3,7 @@ package com.zalomsky.wallet.presentation.common.color
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 
+val white: Int = Color(0xFFFFFFFF).toArgb()
 val grey: Int = Color(0xFF616161).toArgb()
 val blue: Int = Color(0xFF3864FF).toArgb()
 val red: Int = Color(0xFFFF0000).toArgb()
@@ -25,6 +26,19 @@ val moneyTextColor: Color = Color(0xFF228B22)
 val buttonObjectColor: Color = Color.White
 val buttonBackColor: Color = Color(0xFF329932)
 
+val systemTextColor: Color = Color(0xFF011353)
 val systemColor: Color = Color(0xFF0B9AFA)
-val backgroundColor: Color = Color(0xFFFDFDFD)
+val backgroundColorr: Color = Color(0xFFF8F8F8)
+val backgroundColor: Color = Color(0xFFF8F8F8)
 val backgroundColor2: Color = Color(0xFFF5F5F5)
+
+val Purple200 = Color(0xFF0F9D58)
+val Purple500 = Color(0xFF0F9D58)
+val Purple700 = Color(0xFF3700B3)
+val Teal200 = Color(0xFF03DAC5)
+
+// on below line we are adding different colors.
+val greenColor = Color(0xFF0F9D58)
+val blueColor = Color(0xFF2196F3)
+val yellowColor = Color(0xFFFFC107)
+val redColor = Color(0xFFF44336)

@@ -10,8 +10,8 @@ import com.zalomsky.wallet.domain.model.Category
 
 @Database(
     entities = [Account::class, Category::class],
-    autoMigrations = [AutoMigration(from = 4, to = 5/*, spec = AppDatabase.Migration1To2::class*/)],
-    version = 5
+    autoMigrations = [AutoMigration(from = 9, to = 10/*, spec = AppDatabase.Migration9To10::class)*/)],
+    version = 10
 )
 abstract class AppDatabase: RoomDatabase() {
 
@@ -19,13 +19,7 @@ abstract class AppDatabase: RoomDatabase() {
 
     abstract fun categoryDao(): CategoryRepositoryImpl
 
-/*    class Migration1To2: AutoMigrationSpec*/
-
-/*    val MIGRATION_21_22: Migration = object : Migration(21, 22) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("CREATE TABLE 'Category' ('id' INTEGER, 'name' TEXT, 'icon' INTEGER, 'amount' REAL, PRIMARY KEY('id'))")
-        }
-    }*/
-
+/*    @DeleteColumn(tableName = "Account", columnName = "icon")*/
+/*    class Migration9To10: AutoMigrationSpec*/
 
 }

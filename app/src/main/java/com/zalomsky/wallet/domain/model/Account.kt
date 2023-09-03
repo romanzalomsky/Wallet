@@ -3,6 +3,8 @@ package com.zalomsky.wallet.domain.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.zalomsky.wallet.presentation.listOfAccountsIcons
+import com.zalomsky.wallet.presentation.listOfColors
 
 @Entity
 data class Account(
@@ -11,16 +13,30 @@ data class Account(
     val id: Long = 0,
     val name: String,
     val balance: Double,
-
-    @ColumnInfo(name = "description", defaultValue = "")
     val description: String,
 
-    @ColumnInfo(name = "icon", defaultValue = "")
+    @ColumnInfo(name = "target", defaultValue = "1")
+    val target: Double,
+
+    @ColumnInfo(name = "type", defaultValue = "1")
+    var type: String,
+
+    @ColumnInfo(name = "icon")
     val icon: Int,
-
-    @ColumnInfo(name = "iconColor", defaultValue = "")
     val iconColor: Int
+){
+    companion object {
 
+        fun defaultInstance() = Account (
+            name = "",
+            description = "",
+            balance = 0.0,
+            target = 0.0,
+            icon = listOfAccountsIcons.random(),
+            type = AccountType.REGULAR,
+            iconColor = listOfColors.random()
+        )
+    }
 
-)
+}
 

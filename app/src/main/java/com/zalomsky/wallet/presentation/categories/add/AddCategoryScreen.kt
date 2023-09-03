@@ -38,7 +38,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.zalomsky.wallet.domain.model.Category
 import com.zalomsky.wallet.presentation.common.color.buttonBackColor
 import com.zalomsky.wallet.presentation.common.color.buttonObjectColor
@@ -52,7 +51,8 @@ import com.zalomsky.wallet.presentation.listOfColors
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddCategoryScreen(
-    navController: NavController
+    onCategoryAdded: () -> Unit,
+    upPress: () -> Unit
 ){
     val viewModel = hiltViewModel<AddCategoryScreenViewModel>()
 
@@ -65,7 +65,7 @@ fun AddCategoryScreen(
         backgroundColor = Color(editBackgroundColor),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(route = "Categories") },
+                onClick = { /*navController.navigate(route = "Categories")*/ },
                 backgroundColor = buttonBackColor
             ) {
                 Icon(
@@ -83,7 +83,7 @@ fun AddCategoryScreen(
                                     amount = amount.toDouble(),
                                 )
                             ) {
-                                navController.navigate(route = "Categories")
+                                /*navController.navigate(route = "Categories")*/
                             }
                         }
                 )

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.usecase.AddAccountUseCase
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,6 +39,12 @@ class AddAccountScreenViewModel @Inject constructor(
         }
     }
 
+    fun onTargetChange(newValue: Double){
+        _uiState.update { currentState ->
+            currentState.copy(account = currentState.account.copy(target = newValue))
+        }
+    }
+
     fun onIconChange(newValue: Int){
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(icon = newValue))
@@ -51,7 +58,7 @@ class AddAccountScreenViewModel @Inject constructor(
     }
 
     fun addAccount(onAccountAdded: () -> Unit){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             addAccountUseCase(uiState.value.account)
                 .runCatching{
                     onAccountAdded()
@@ -59,20 +66,4 @@ class AddAccountScreenViewModel @Inject constructor(
         }
     }
 
-/*    fun onEvent(event: AccountEvent){
-        when (event) {
-            is AccountEvent.Add -> addAccount(event.onAdded)
-        }
-    }*/
-
-/*    fun addAccount(account: Account, onSuccess: () -> Unit){
-        viewModelScope.launch {
-            addAccountUseCase.invoke(account = account)
-            onSuccess()
-        }
-    }*/
-}
-
-sealed interface AccountEvent {
-    data class Add(val onAdded: () -> Unit) : AccountEvent
 }

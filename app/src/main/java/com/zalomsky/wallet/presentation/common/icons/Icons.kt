@@ -16,7 +16,6 @@ val cardIcon1 = R.drawable.creditcard1
 val cardIcon2 = R.drawable.creditcard2
 val cardIcon3 = R.drawable.creditcard3
 
-
 val transportCategoryIcon = R.drawable.bus
 val groceriesCategoryIcon = R.drawable.grocery
 val healthCategoryIcon = R.drawable.cardiogram

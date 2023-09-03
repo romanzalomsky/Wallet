@@ -7,7 +7,7 @@ import javax.inject.Inject
 class AddAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
-    suspend operator fun invoke(account: Account){
+    suspend operator fun invoke(account: Account) {
         accountRepository.insertAccount(account = account)
     }
 

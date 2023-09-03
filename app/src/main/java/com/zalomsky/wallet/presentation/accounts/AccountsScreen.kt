@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -28,16 +29,23 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.Account
+import com.zalomsky.wallet.domain.model.AccountType.Companion.DEBT
+import com.zalomsky.wallet.domain.model.AccountType.Companion.REGULAR
+import com.zalomsky.wallet.domain.model.AccountType.Companion.SAVING
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansLight
@@ -46,15 +54,17 @@ import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AccountsScreen(
-    onAccountAdd: () -> Unit,
-    onAccountEdit: () -> Unit
+    onRegularAccountAdd: () -> Unit,
+    onSavingAccountAdd: () -> Unit,
+    onDebtAccountAdd: () -> Unit,
+    onAccountEdit: (Long) -> Unit,
 ){
     val viewModel: AccountsScreenViewModel = hiltViewModel()
     val accounts = viewModel.accounts.observeAsState(listOf()).value
 
     Scaffold(
         topBar = {
-            AccountsTopBar(onAccountAdd)
+            AccountsTopBar(onRegularAccountAdd, onSavingAccountAdd, onDebtAccountAdd)
         },
         backgroundColor = backgroundColor,
         modifier = Modifier
@@ -66,6 +76,7 @@ fun AccountsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
+                viewModel.getAllAccounts()
                 items(accounts){item ->
                     AccountListItem(account = item, onAccountEdit = onAccountEdit)
                 }
@@ -77,7 +88,7 @@ fun AccountsScreen(
 @Composable
 fun AccountListItem(
     account: Account,
-    onAccountEdit: () -> Unit
+    onAccountEdit: (Long) -> Unit
 ) {
     val paddingModifier = Modifier.padding(3.dp)
     Card(
@@ -86,8 +97,7 @@ fun AccountListItem(
             .width(355.dp)
             .height(70.dp)
             .clip(RoundedCornerShape(20.dp))
-            .clickable (onClick = onAccountEdit)
-        /*navController.navigate(route = "editScreen" + "/${account.id}")*/
+            .clickable(onClick = { onAccountEdit(account.id) })
     ) {
         Row {
             Box(
@@ -110,15 +120,33 @@ fun AccountListItem(
                 Text(
                     text = account.name,
                     fontFamily = splineSansMedium,
-                    fontSize = 20.sp,
+                    fontSize = 15.sp,
                     color = systemTextColor,
                     modifier = Modifier.padding(top = 10.dp)
                 )
-                Text(
-                    text = account.balance.toString() + " $",
-                    color = systemTextColor,
-                    fontFamily = splineSansMedium,
-                )
+                when(account.type){
+                    REGULAR -> {
+                        Text(
+                            text = account.balance.toString() + "$",
+                            color = systemTextColor,
+                            fontFamily = splineSansMedium,
+                        )
+                    }
+                    SAVING -> {
+                        Text(
+                            text = account.balance.toString() + "$" + " out of " + "${account.target}" + "$",
+                            color = systemTextColor,
+                            fontFamily = splineSansMedium,
+                        )
+                    }
+                    DEBT -> {
+                        Text(
+                            text = account.balance.toString() + "$",
+                            color = systemTextColor,
+                            fontFamily = splineSansMedium,
+                        )
+                    }
+                }
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -138,8 +166,12 @@ fun AccountListItem(
 
 @Composable
 fun AccountsTopBar(
-    onAccountAdd: () -> Unit
+    onRegularAccountAdd: () -> Unit,
+    onSavingAccountAdd: () -> Unit,
+    onDebtAccountAdd: () -> Unit,
 ) {
+    val showDialog = remember { mutableStateOf(false) }
+
     TopAppBar(
         backgroundColor = Color.White
     ){
@@ -160,9 +192,71 @@ fun AccountsTopBar(
             color = systemTextColor,
         )
         Spacer(Modifier.weight(1f, true))
-        IconButton(onClick = onAccountAdd ) {
+        IconButton(onClick = { showDialog.value = true }) {
             Icon(Icons.Filled.Add, contentDescription = "Add", modifier = Modifier.size(30.dp))
+            if(showDialog.value){
+                TypeAlertDialog (
+                    showDialog = showDialog.value,
+                    onDismiss = {showDialog.value = false},
+                    onRegularAccountAdd = onRegularAccountAdd,
+                    onSavingAccountAdd = onSavingAccountAdd,
+                    onDebtAccountAdd = onDebtAccountAdd
+                )
+            }
         }
     }
 }
 
+@Composable
+fun AlertItem(
+    alertText: String,
+    onAccountAdd: () -> Unit
+) {
+    Box(
+        contentAlignment = Alignment.CenterStart,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .background(Color.White)
+            .padding(horizontal = 25.dp)
+            .clickable(onClick = onAccountAdd)
+    ) {
+        Row {
+            Text(
+                text = alertText,
+                fontSize = 20.sp,
+                color = systemTextColor
+            )
+        }
+    }
+}
+
+@Composable
+fun TypeAlertDialog(
+    onRegularAccountAdd: () -> Unit,
+    onSavingAccountAdd: () -> Unit,
+    onDebtAccountAdd: () -> Unit,
+    showDialog: Boolean,
+    onDismiss: () -> Unit
+) {
+    val openDialog = remember { mutableStateOf(showDialog) }
+
+    if(openDialog.value){
+        AlertDialog(
+            onDismissRequest = {
+                onDismiss()
+            },
+            title = { Text(text = "Choose Type of Account") },
+            buttons = {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.height(5.dp))
+                    AlertItem(alertText = stringResource(id = R.string.regular_item), onAccountAdd = onRegularAccountAdd)
+                    AlertItem(alertText = stringResource(id = R.string.saving_item), onAccountAdd = onSavingAccountAdd)
+                    AlertItem(alertText = stringResource(id = R.string.debt_item), onAccountAdd = onDebtAccountAdd)
+                }
+            }
+        )
+    }
+}

@@ -31,3 +31,14 @@ val systemColor: Color = Color(0xFF0B9AFA)
 val backgroundColorr: Color = Color(0xFFF8F8F8)
 val backgroundColor: Color = Color(0xFFF8F8F8)
 val backgroundColor2: Color = Color(0xFFF5F5F5)
+
+val Purple200 = Color(0xFF0F9D58)
+val Purple500 = Color(0xFF0F9D58)
+val Purple700 = Color(0xFF3700B3)
+val Teal200 = Color(0xFF03DAC5)
+
+// on below line we are adding different colors.
+val greenColor = Color(0xFF0F9D58)
+val blueColor = Color(0xFF2196F3)
+val yellowColor = Color(0xFFFFC107)
+val redColor = Color(0xFFF44336)

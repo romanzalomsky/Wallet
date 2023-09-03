@@ -7,4 +7,5 @@ class GetAccountByIdUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
     suspend operator fun invoke(id: Long) = accountRepository.getAccountById(id = id)
+
 }

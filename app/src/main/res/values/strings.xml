@@ -22,6 +22,7 @@
     <string name="balance_label">Balance</string>
     <string name="your_current_card_label">Your current card</string>
     <string name="current_value_label">Current value</string>
+    <string name="target_label">Target</string>
 
     <!-- Beauty -->
     <string name="dots_beauty">. . .</string>
@@ -29,5 +30,10 @@
     <!-- Buttons -->
     <string name="delete_account_button">DELETE ACCOUNT</string>
     <string name="create_account_button">CREATE ACCOUNT</string>
+
+    <!-- Alert items -->
+    <string name="regular_item">Regular</string>
+    <string name="saving_item">Saving</string>
+    <string name="debt_item">Debt</string>
 
 </resources>

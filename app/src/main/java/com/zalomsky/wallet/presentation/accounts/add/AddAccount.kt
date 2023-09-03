@@ -1,9 +1,11 @@
 package com.zalomsky.wallet.presentation.accounts.add
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.domain.model.AccountType.*
@@ -11,8 +13,8 @@ import com.zalomsky.wallet.domain.model.AccountType.Companion.DEBT
 import com.zalomsky.wallet.domain.model.AccountType.Companion.REGULAR
 import com.zalomsky.wallet.domain.model.AccountType.Companion.SAVING
 import com.zalomsky.wallet.presentation.ScreenTopBar
+import com.zalomsky.wallet.presentation.accounts.AccountDetailViewModel
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
-import com.zalomsky.wallet.presentation.accounts.AccountViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -20,14 +22,14 @@ fun AddAccount(
     onBackPressed: () -> Unit,
     state: Any?
 ){
-    val viewModel : AccountViewModel = hiltViewModel()
+    val viewModel : AccountDetailViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
             ScreenTopBar(
                 appHeader = "Add Account",
-                onDone = {viewModel.addAccount(onBackPressed)},
+                onDone = {viewModel.addAccount(onBackPressed, )},
                 onBackPressed = onBackPressed
             )
         },

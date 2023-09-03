@@ -154,6 +154,7 @@ fun DescriptionInputFields(
     value: String,
     onNewValue: (String) -> Unit
 ) {
+    var text by remember { mutableStateOf(value) }
     Column {
         Text(
             text = labelText,

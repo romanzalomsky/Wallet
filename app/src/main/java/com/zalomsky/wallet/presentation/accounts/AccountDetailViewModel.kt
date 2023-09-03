@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountViewModel @Inject constructor(
+class AccountDetailViewModel @Inject constructor(
     private val getAllAccountsUseCase: GetAllAccountsUseCase,
     private val addAccountUseCase: AddAccountUseCase,
     private val getAccountByIdUseCase: GetAccountByIdUseCase,
@@ -31,9 +31,11 @@ class AccountViewModel @Inject constructor(
     val account: LiveData<Account>
         get() = _account
 
+
     private val _accounts = MutableLiveData<List<Account>>()
     val accounts: LiveData<List<Account>>
         get() = _accounts
+
 
     private val _uiState = MutableStateFlow(AccountUiState())
     val uiState: StateFlow<AccountUiState> = _uiState.asStateFlow()
@@ -54,19 +56,24 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    fun addAccount(onSuccess: () -> Unit){
+        viewModelScope.launch {
+            addAccountUseCase(uiState.value.account)
+                .onSuccess {
+                    onSuccess()
+                }
+                .onFailure {
+                    // todo: show message
+                }
+        }
+    }
+
     fun deleteAccount(onSuccess: () -> Unit){
         viewModelScope.launch {
             account.value?.let {
                 deleteAccountUseCase.invoke(account = it)
                 onSuccess()
             }
-        }
-    }
-
-    fun addAccount(onSuccess: () -> Unit){
-        viewModelScope.launch {
-            addAccountUseCase(uiState.value.account)
-            onSuccess()
         }
     }
 
@@ -79,8 +86,13 @@ class AccountViewModel @Inject constructor(
 
     fun updateAccount(onSuccess: () -> Unit){
         viewModelScope.launch {
-            account.value?.let { updateAccountUseCase(it) }
-            onSuccess()
+            updateAccountUseCase(uiState.value.account)
+                .onSuccess {
+                    onSuccess()
+                }
+                .onFailure {
+                    // todo: show message
+                }
         }
     }
 

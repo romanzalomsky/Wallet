@@ -15,7 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.presentation.ScreenTopBar
-import com.zalomsky.wallet.presentation.accounts.AccountViewModel
+import com.zalomsky.wallet.presentation.accounts.AccountDetailViewModel
 import com.zalomsky.wallet.presentation.accounts.add.BalanceInputFields
 import com.zalomsky.wallet.presentation.accounts.add.DescriptionInputFields
 import com.zalomsky.wallet.presentation.accounts.add.NameInputFields
@@ -27,7 +27,7 @@ fun EditAccount(
     onBackPressed: () -> Unit,
     id: String?,
 ){
-    val viewModel: AccountViewModel = hiltViewModel()
+    val viewModel: AccountDetailViewModel = hiltViewModel()
     val account = viewModel.account.observeAsState().value
 
     id?.toLong()?.let {

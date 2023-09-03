@@ -59,7 +59,7 @@ fun AccountsScreen(
     onDebtAccountAdd: () -> Unit,
     onAccountEdit: (Long) -> Unit,
 ){
-    val viewModel: AccountsScreenViewModel = hiltViewModel()
+    val viewModel: AccountViewModel = hiltViewModel()
     val accounts = viewModel.accounts.observeAsState(listOf()).value
 
     Scaffold(

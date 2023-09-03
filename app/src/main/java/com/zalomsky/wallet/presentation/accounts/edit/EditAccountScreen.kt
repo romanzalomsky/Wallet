@@ -8,8 +8,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -21,6 +25,7 @@ import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -53,45 +58,7 @@ fun EditAccountScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                backgroundColor = Color.White
-            ) {
-                IconButton(
-                    onClick = upPress,
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.ArrowBack,
-                        contentDescription = "arrow back icon",
-                        tint = Color.Gray,
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-                Text(
-                    text = "Edit Account",
-                    fontFamily = splineSansMedium,
-                    fontSize = 20.sp,
-                    color = systemTextColor
-                )
-                Spacer(Modifier.weight(1f, true))
-                val context = LocalContext.current
-                IconButton(
-                    onClick = {
-                        editAccountViewModel.updateAccount(upPress)
-                        Toast.makeText(
-                            context,
-                            "Account Edited Successfully",
-                            Toast.LENGTH_LONG
-                        ).show();
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Check,
-                        contentDescription = "check icon",
-                        tint = Color.Gray,
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
+            EditAppBar (upPress = upPress)
         },
         backgroundColor = backgroundColor,
         modifier = Modifier
@@ -119,33 +86,92 @@ fun EditAccountScreen(
                     onNewValue = editAccountViewModel::onBalanceChange
                 )
             }
-            Row(
+            ButtonDelete(upPress = upPress)
+        }
+    }
+}
+
+@Composable
+fun EditAppBar(
+    upPress: () -> Unit
+) {
+    val editAccountViewModel = hiltViewModel<EditAccountScreenViewModel>()
+    TopAppBar(
+        backgroundColor = Color.White
+    ) {
+        IconButton(
+            onClick = upPress,
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.ArrowBack,
+                contentDescription = "arrow back icon",
+                tint = Color.Gray,
+                modifier = Modifier.size(25.dp)
+            )
+        }
+        Text(
+            text = "Edit Account",
+            fontFamily = splineSansMedium,
+            fontSize = 20.sp,
+            color = systemTextColor
+        )
+        Spacer(Modifier.weight(1f, true))
+        val context = LocalContext.current
+        IconButton(
+            onClick = {
+                editAccountViewModel.updateAccount(upPress)
+                Toast.makeText(
+                    context,
+                    "Account Edited Successfully",
+                    Toast.LENGTH_LONG
+                ).show();
+            },
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Check,
+                contentDescription = "check icon",
+                tint = Color.Gray,
+                modifier = Modifier.size(25.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun ButtonDelete(
+    upPress: () -> Unit
+) {
+    val editAccountViewModel = hiltViewModel<EditAccountScreenViewModel>()
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = Color.Red,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp)
+            .height(56.dp),
+    ){
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Delete,
+                contentDescription = "",
+                tint = Color.White,
                 modifier = Modifier
-                    .padding(horizontal = 15.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Delete,
-                    contentDescription = "",
-                    tint = Color.Red,
-                    modifier = Modifier
-                )
-                Text(
-                    text = stringResource(id = R.string.delete_account_button),
-                    fontSize = 15.sp,
-                    fontFamily = aksharMedium,
-                    color = Color.Red,
-                    modifier = Modifier
-                        .clickable{
-                            editAccountViewModel.deleteAccounts(upPress)
-                        }
-                )
-/*                Text(
-                    text = "$id",
-                    fontSize = 15.sp,
-                    fontFamily = aksharMedium,
-                    color = Color.Red,
-                )*/
-            }
+            )
+            Text(
+                text = stringResource(id = R.string.delete_account_button),
+                fontSize = 15.sp,
+                fontFamily = aksharMedium,
+                color = Color.White,
+                modifier = Modifier
+                    .clickable{
+                        editAccountViewModel.deleteAccounts(upPress)
+                    }
+            )
         }
     }
 }

@@ -48,9 +48,6 @@ fun AddAccountScreen(
     upPress: () -> Unit,
     state: Any?
 ){
-    val addAccountScreenViewModel : AddAccountScreenViewModel = hiltViewModel()
-    val uiState by addAccountScreenViewModel.uiState.collectAsStateWithLifecycle()
-
     Scaffold(
         topBar = {
             AppBar(upPress = upPress)

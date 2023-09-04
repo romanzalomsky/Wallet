@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.presentation.ScreenTopBar
@@ -28,6 +30,7 @@ fun EditAccount(
     id: String?,
 ){
     val viewModel: AccountDetailViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val account = viewModel.account.observeAsState().value
 
     id?.toLong()?.let {
@@ -46,19 +49,20 @@ fun EditAccount(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        EditView(
-            account = account,
-            onNameChange = viewModel::onNameChange,
-            onDescriptionChange = viewModel::onDescriptionChange,
-            onBalanceChange = viewModel::onBalanceChange,
-            onAccountDelete = {viewModel.deleteAccount(onBackPressed)}
-        )
+        account?.let { acc ->
+            EditView(
+                account = acc,
+                onNameChange = viewModel::onNameChange,
+                onDescriptionChange = viewModel::onDescriptionChange,
+                onBalanceChange = viewModel::onBalanceChange
+            ) { viewModel.deleteAccount(onBackPressed) }
+        }
     }
 }
 
 @Composable
 fun EditView(
-    account: Account?,
+    account: Account,
     onNameChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
     onBalanceChange: (Double) -> Unit,
@@ -68,23 +72,21 @@ fun EditView(
         modifier = Modifier.padding(15.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        account?.let {
-            NameInputFields(
-                labelText = stringResource(id = R.string.name_label),
-                value = it.name,
-                onNewValue = onNameChange
-            )
-            DescriptionInputFields(
-                labelText = stringResource(id = R.string.description_label),
-                value = it.description,
-                onNewValue = onDescriptionChange
-            )
-            BalanceInputFields(
-                labelText = stringResource(id = R.string.balance_label),
-                value = it.balance,
-                onNewValue = onBalanceChange
-            )
-        }
+        NameInputFields(
+            labelText = stringResource(id = R.string.name_label),
+            value = account.name,
+            onNewValue = onNameChange
+        )
+        DescriptionInputFields(
+            labelText = stringResource(id = R.string.description_label),
+            value = account.description,
+            onNewValue = onDescriptionChange
+        )
+        BalanceInputFields(
+            labelText = stringResource(id = R.string.balance_label),
+            value = account.balance,
+            onNewValue = onBalanceChange
+        )
         ButtonDelete(onAccountDelete = onAccountDelete)
     }
 }

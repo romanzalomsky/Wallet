@@ -66,8 +66,6 @@ fun AccountTypeField(
 @Composable
 fun TargetInputField(
     labelText: String,
-    labelModifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
     value: Double,
     onNewValue: (Double) -> Unit
 ) {
@@ -78,7 +76,7 @@ fun TargetInputField(
             fontSize = 16.sp,
             color = systemTextColor,
             fontFamily = splineSansMedium,
-            modifier = labelModifier
+            modifier = Modifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
@@ -88,7 +86,7 @@ fun TargetInputField(
                 val newValue = newText.toDoubleOrNull() ?: 0.0
                 onNewValue(newValue)
             },
-            modifier = textFieldModifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
                 .height(56.dp),
@@ -110,24 +108,26 @@ fun TargetInputField(
 @Composable
 fun NameInputFields(
     labelText: String,
-    labelModifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
     value: String,
     onNewValue: (String) -> Unit
 ) {
+    var text by remember {mutableStateOf(value)}
     Column {
         Text(
             text = labelText,
             fontSize = 16.sp,
             color = systemTextColor,
             fontFamily = splineSansMedium,
-            modifier = labelModifier
+            modifier = Modifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
-            value = value,
-            onValueChange = onNewValue,
-            modifier = textFieldModifier
+            value = text,
+            onValueChange = { newText ->
+                text = newText
+                onNewValue(newText)
+            },
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
                 .height(56.dp),
@@ -149,25 +149,26 @@ fun NameInputFields(
 @Composable
 fun DescriptionInputFields(
     labelText: String,
-    labelModifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
     value: String,
     onNewValue: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf(value) }
+    var text by remember {mutableStateOf(value)}
     Column {
         Text(
             text = labelText,
             fontSize = 16.sp,
             color = systemTextColor,
             fontFamily = splineSansMedium,
-            modifier = labelModifier
+            modifier = Modifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
-            value = value,
-            onValueChange = onNewValue,
-            modifier = textFieldModifier
+            value = text,
+            onValueChange = { newText ->
+                text = newText
+                onNewValue(newText)
+            },
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
                 .height(56.dp),
@@ -189,8 +190,6 @@ fun DescriptionInputFields(
 @Composable
 fun BalanceInputFields(
     labelText: String,
-    labelModifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
     value: Double,
     onNewValue: (Double) -> Unit
 ) {
@@ -201,7 +200,7 @@ fun BalanceInputFields(
             fontSize = 16.sp,
             color = systemTextColor,
             fontFamily = splineSansMedium,
-            modifier = labelModifier
+            modifier = Modifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
@@ -211,7 +210,7 @@ fun BalanceInputFields(
                 val newValue = newText.toDoubleOrNull() ?: 0.0
                 onNewValue(newValue)
             },
-            modifier = textFieldModifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
                 .height(56.dp),

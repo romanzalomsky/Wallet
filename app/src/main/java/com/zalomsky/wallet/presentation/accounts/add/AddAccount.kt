@@ -1,11 +1,10 @@
 package com.zalomsky.wallet.presentation.accounts.add
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.domain.model.AccountType.*
@@ -24,12 +23,13 @@ fun AddAccount(
 ){
     val viewModel : AccountDetailViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val account = viewModel.account.observeAsState().value
 
     Scaffold(
         topBar = {
             ScreenTopBar(
                 appHeader = "Add Account",
-                onDone = {viewModel.addAccount(onBackPressed, )},
+                onDone = {viewModel.addAccount(onBackPressed)},
                 onBackPressed = onBackPressed
             )
         },

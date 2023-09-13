@@ -37,7 +37,6 @@ import com.zalomsky.wallet.R
 import com.zalomsky.wallet.presentation.accounts.add.BalanceInputFields
 import com.zalomsky.wallet.presentation.accounts.add.DescriptionInputFields
 import com.zalomsky.wallet.presentation.accounts.add.NameInputFields
-import com.zalomsky.wallet.presentation.accounts.add.ValueDropDown
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.aksharMedium
@@ -78,7 +77,7 @@ fun EditAccountScreen(
                 value = account?.description.toString(),
                 onNewValue = editAccountViewModel::onDescriptionChange
             )
-            ValueDropDown(label = stringResource(id = R.string.current_value_label))
+/*            ValueDropDown(label = stringResource(id = R.string.current_value_label))*/
             account?.balance?.let { it1 ->
                 BalanceInputFields(
                     labelText = stringResource(id = R.string.balance_label),

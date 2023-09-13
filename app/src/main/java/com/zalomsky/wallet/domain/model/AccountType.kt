@@ -8,10 +8,3 @@ class AccountType {
     }
 }
 
-/*val accountType: Any
-    get() = when {
-       account.type == "REGULAR" -> AccountType.REGULAR
-       account.type == "SAVING" -> AccountType.SAVING
-       account.type == "DEBT" -> AccountType.DEBT
-        else -> {}
-    }*/

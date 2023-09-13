@@ -23,6 +23,7 @@
     <string name="your_current_card_label">Your current card</string>
     <string name="current_value_label">Current value</string>
     <string name="target_label">Target</string>
+    <string name="amount_label">Amount</string>
 
     <!-- Beauty -->
     <string name="dots_beauty">. . .</string>

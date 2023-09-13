@@ -10,20 +10,20 @@ import com.zalomsky.wallet.presentation.listOfColors
 data class Account(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val name: String,
-    val balance: Double,
-    val description: String,
+    var id: Long = 0,
+    var name: String,
+    var balance: Double,
+    var description: String,
 
     @ColumnInfo(name = "target", defaultValue = "1")
-    val target: Double,
+    var target: Double,
 
     @ColumnInfo(name = "type", defaultValue = "1")
     var type: String,
 
     @ColumnInfo(name = "icon")
-    val icon: Int,
-    val iconColor: Int
+    var icon: Int,
+    var iconColor: Int
 ){
     companion object {
 
@@ -39,4 +39,6 @@ data class Account(
     }
 
 }
+
+
 

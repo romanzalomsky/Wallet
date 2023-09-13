@@ -11,14 +11,16 @@ import androidx.navigation.navigation
 import com.zalomsky.wallet.domain.model.AccountType.Companion.DEBT
 import com.zalomsky.wallet.domain.model.AccountType.Companion.REGULAR
 import com.zalomsky.wallet.domain.model.AccountType.Companion.SAVING
-import com.zalomsky.wallet.presentation.accounts.AccountsScreen
+import com.zalomsky.wallet.presentation.accounts.AccountScreen
 import com.zalomsky.wallet.presentation.accounts.addAccountScreen
 import com.zalomsky.wallet.presentation.accounts.editAccountScreen
 import com.zalomsky.wallet.presentation.accounts.navigateToAddAccountScreen
 import com.zalomsky.wallet.presentation.accounts.navigateToEditAccountScreen
-import com.zalomsky.wallet.presentation.categories.CategoriesScreen
+import com.zalomsky.wallet.presentation.categories.CategoryScreen
 import com.zalomsky.wallet.presentation.categories.addCategoryScreen
+import com.zalomsky.wallet.presentation.categories.editCategoryScreen
 import com.zalomsky.wallet.presentation.categories.navigateToAddCategoryScreen
+import com.zalomsky.wallet.presentation.categories.navigateToEditCategoryScreen
 import com.zalomsky.wallet.presentation.overview.OverviewScreen
 import com.zalomsky.wallet.presentation.transactions.TransactionsScreen
 
@@ -42,6 +44,9 @@ fun NavGraphBuilder.walletNavGraph(
         addCategoryScreen (
             onBackPressed = upPress
         )
+        editCategoryScreen (
+            onBackPressed = upPress
+        )
     }
 }
 
@@ -50,7 +55,7 @@ fun NavGraphBuilder.bottomRoutes(
     modifier: Modifier = Modifier
 ){
     composable(HomeSections.ACCOUNTS.route) {
-        AccountsScreen(
+        AccountScreen(
             onRegularAccountAdd = {
                 navController.navigateToAddAccountScreen(REGULAR)
             },
@@ -60,15 +65,18 @@ fun NavGraphBuilder.bottomRoutes(
             onDebtAccountAdd = {
                 navController.navigateToAddAccountScreen(DEBT)
             },
-            onAccountEdit = { accountId ->
-                navController.navigateToEditAccountScreen(id = accountId)
+            onAccountEdit = { accountId, accountType ->
+                navController.navigateToEditAccountScreen(id = accountId, state = accountType)
             }
         )
     }
     composable(HomeSections.CATEGORIES.route) {
-        CategoriesScreen(
+        CategoryScreen(
             onCategoryAdd = {
                 navController.navigateToAddCategoryScreen()
+            },
+            onCategoryEdit = { categoryId ->
+                navController.navigateToEditCategoryScreen(id = categoryId)
             }
         )
     }

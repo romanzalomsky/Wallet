@@ -26,6 +26,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -35,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -51,15 +55,15 @@ import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansLight
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
-fun AccountsScreen(
+fun AccountScreen(
     onRegularAccountAdd: () -> Unit,
     onSavingAccountAdd: () -> Unit,
     onDebtAccountAdd: () -> Unit,
-    onAccountEdit: (Long) -> Unit,
+    onAccountEdit: (Long, String) -> Unit
 ){
-    val viewModel: AccountDetailViewModel = hiltViewModel()
+    val viewModel: AccountScreenViewModel = hiltViewModel()
     val accounts = viewModel.accounts.observeAsState(listOf()).value
 
     Scaffold(
@@ -88,7 +92,7 @@ fun AccountsScreen(
 @Composable
 fun AccountListItem(
     account: Account,
-    onAccountEdit: (Long) -> Unit
+    onAccountEdit: (Long, String) -> Unit
 ) {
     val paddingModifier = Modifier.padding(3.dp)
     Card(
@@ -97,7 +101,7 @@ fun AccountListItem(
             .width(355.dp)
             .height(70.dp)
             .clip(RoundedCornerShape(20.dp))
-            .clickable(onClick = { onAccountEdit(account.id) })
+            .clickable(onClick = { onAccountEdit(account.id, account.type) })
     ) {
         Row {
             Box(
@@ -164,20 +168,19 @@ fun AccountListItem(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AccountsTopBar(
     onRegularAccountAdd: () -> Unit,
     onSavingAccountAdd: () -> Unit,
-    onDebtAccountAdd: () -> Unit,
+    onDebtAccountAdd: () -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
 
     TopAppBar(
         backgroundColor = Color.White
     ){
-        IconButton(
-            onClick = {  },
-        ) {
+        IconButton(onClick = { } ) {
             Icon(
                 imageVector = Icons.Outlined.Menu,
                 contentDescription = "Menu icon",
@@ -259,4 +262,16 @@ fun TypeAlertDialog(
             }
         )
     }
+}
+
+enum class DrawerItems(val title: String, val icon: ImageVector) {
+    Home("Home", Icons.Default.Home),
+    Favorites("Favorites", Icons.Default.Favorite),
+    Settings("Settings", Icons.Default.Settings)
+}
+
+enum class DrawerValue {
+    Closed,
+
+    Open
 }

@@ -24,5 +24,4 @@ interface AccountRepositoryImpl {
 
     @Update
     suspend fun updateAccount(account: Account)
-
 }

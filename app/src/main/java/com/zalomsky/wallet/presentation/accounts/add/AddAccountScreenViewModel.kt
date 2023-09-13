@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.usecase.AddAccountUseCase
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,11 +56,14 @@ class AddAccountScreenViewModel @Inject constructor(
         }
     }
 
-    fun addAccount(onAccountAdded: () -> Unit){
-        viewModelScope.launch(Dispatchers.IO) {
+    fun addAccount(onSuccess: () -> Unit){
+        viewModelScope.launch {
             addAccountUseCase(uiState.value.account)
-                .runCatching{
-                    onAccountAdded()
+                .onSuccess {
+                    onSuccess()
+                }
+                .onFailure {
+                    //todo
                 }
         }
     }

@@ -20,7 +20,7 @@ fun NavGraphBuilder.addAccountScreen(
     onBackPressed: () -> Unit
 ) {
     composable(MainDestinations.ADD_ACCOUNT_ROUTE + "/{state}", arguments = listOf(navArgument("state"){type = NavType.StringType})){
-        AddAccountScreen(upPress = onBackPressed, it.arguments?.getString("state"))
+        AddAccountScreen(onBackPressed = onBackPressed, it.arguments?.getString("state"))
     }
 }
 

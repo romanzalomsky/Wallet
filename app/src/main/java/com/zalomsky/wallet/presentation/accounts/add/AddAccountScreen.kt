@@ -24,7 +24,7 @@ import com.zalomsky.wallet.presentation.common.color.backgroundColor
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddAccountScreen(
-    upPress: () -> Unit,
+    onBackPressed: () -> Unit,
     state: Any?
 ){
     val viewModel : AddAccountScreenViewModel = hiltViewModel()
@@ -32,7 +32,7 @@ fun AddAccountScreen(
 
     Scaffold(
         topBar = {
-            AddAccountAppBar(upPress = upPress, addAccount = {viewModel.addAccount(upPress)})
+            AddAccountAppBar(upPress = onBackPressed, addAccount = {viewModel.addAccount(onBackPressed)})
         }
     ) {
         when(state){

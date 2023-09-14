@@ -19,11 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditAccountScreenViewModel @Inject constructor(
-
     private val getAccountByIdUseCase: GetAccountByIdUseCase,
     private val deleteAccountUseCase: DeleteAccountUseCase,
     private val updateAccountUseCase: UpdateAccountUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _account = MutableLiveData<Account>()
     val account: LiveData<Account>
@@ -32,51 +31,57 @@ class EditAccountScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AccountUiState())
     val uiState: StateFlow<AccountUiState> = _uiState.asStateFlow()
 
-    fun getAccountById(id: Long){
+    fun getAccountById(id: Long) {
         viewModelScope.launch {
-            getAccountByIdUseCase(id = id).let {
-                _account.postValue(it)
+            getAccountByIdUseCase(id).let {
+                _account.postValue(it) // todo: post когда с другого потока, _account.value = newValue когда с main потока
             }
         }
     }
 
-    fun onNameChange(newValue: String){
+    fun onNameChange(newValue: String) {
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(name = newValue))
         }
     }
 
-    fun onDescriptionChange(newValue: String){
+    fun onDescriptionChange(newValue: String) {
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(description = newValue))
         }
     }
 
-    fun onBalanceChange(newValue: Double){
+    fun onBalanceChange(newValue: Double) {
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(balance = newValue))
         }
     }
 
-    fun deleteAccounts(onSuccess: () -> Unit){
+    fun onTargetChange(newValue: Double) {
+        _uiState.update { currentState ->
+            currentState.copy(account = currentState.account.copy(target = newValue))
+        }
+    }
+
+    fun deleteAccounts(onSuccess: () -> Unit) {
         viewModelScope.launch {
             account.value?.let {
-                deleteAccountUseCase.invoke(account = it)
+                deleteAccountUseCase(account = it)
                 onSuccess()
             }
         }
     }
 
-/*    fun updateAccounts(account: Account, onSuccess: () -> Unit){
-        viewModelScope.launch(Dispatchers.IO) {
-            updateAccountUseCase.invoke(account = account)
-            onSuccess()
-        }
-    }*/
+    /*    fun updateAccounts(account: Account, onSuccess: () -> Unit){ todo: удалить закоменченое все если не надо, если надо - раскоментить
+            viewModelScope.launch(Dispatchers.IO) {
+                updateAccountUseCase.invoke(account = account)
+                onSuccess()
+            }
+        }*/
 
-    fun updateAccount(onAccountUpdated: () -> Unit){
+    fun updateAccount(onAccountUpdated: () -> Unit) {
         viewModelScope.launch {
-            updateAccountUseCase(account.value!!.copy())
+            updateAccountUseCase // todo: убрать !!
                 .runCatching {
                     onAccountUpdated()
                 }

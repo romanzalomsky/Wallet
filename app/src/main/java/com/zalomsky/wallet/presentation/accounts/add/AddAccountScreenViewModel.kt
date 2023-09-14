@@ -15,55 +15,55 @@ import javax.inject.Inject
 @HiltViewModel
 class AddAccountScreenViewModel @Inject constructor(
     private val addAccountUseCase: AddAccountUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AccountUiState())
     val uiState: StateFlow<AccountUiState> = _uiState.asStateFlow()
 
-    fun onNameChange(newValue: String){
+    fun onNameChange(newValue: String) {
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(name = newValue))
         }
     }
 
-    fun onDescriptionChange(newValue: String){
+    fun onDescriptionChange(newValue: String) {
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(description = newValue))
         }
     }
 
-    fun onBalanceChange(newValue: Double){
+    fun onBalanceChange(newValue: Double) {
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(balance = newValue))
         }
     }
 
-    fun onTargetChange(newValue: Double){
+    fun onTargetChange(newValue: Double) {
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(target = newValue))
         }
     }
 
-    fun onIconChange(newValue: Int){
+    fun onIconChange(newValue: Int) { // delete unused functions
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(icon = newValue))
         }
     }
 
-    fun onIconColor(newValue: Int){
+    fun onIconColor(newValue: Int) {
         _uiState.update { currentState ->
             currentState.copy(account = currentState.account.copy(iconColor = newValue))
         }
     }
 
-    fun addAccount(onSuccess: () -> Unit){
+    fun addAccount(onSuccess: () -> Unit) {
         viewModelScope.launch {
             addAccountUseCase(uiState.value.account)
                 .onSuccess {
                     onSuccess()
                 }
                 .onFailure {
-                    //todo
+                    // todo: show toast/snackbar
                 }
         }
     }

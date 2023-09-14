@@ -21,7 +21,7 @@ class AccountsScreenViewModel @Inject constructor(
 
     fun getAllAccounts() {
         viewModelScope.launch {
-            getAllAccountsUseCase.invoke().let {
+            getAllAccountsUseCase().let {
                 _accounts.postValue(it)
             }
         }

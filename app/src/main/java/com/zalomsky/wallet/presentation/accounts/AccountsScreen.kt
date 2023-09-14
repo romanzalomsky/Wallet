@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -43,9 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.Account
-import com.zalomsky.wallet.domain.model.AccountType.Companion.DEBT
-import com.zalomsky.wallet.domain.model.AccountType.Companion.REGULAR
-import com.zalomsky.wallet.domain.model.AccountType.Companion.SAVING
+import com.zalomsky.wallet.domain.model.AccountType
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansLight
@@ -57,27 +54,26 @@ fun AccountsScreen(
     onRegularAccountAdd: () -> Unit,
     onSavingAccountAdd: () -> Unit,
     onDebtAccountAdd: () -> Unit,
-    onAccountEdit: (Long) -> Unit,
-){
+    onAccountEdit: (Long, String) -> Unit
+) {
     val viewModel: AccountsScreenViewModel = hiltViewModel()
     val accounts = viewModel.accounts.observeAsState(listOf()).value
 
     Scaffold(
         topBar = {
-            AccountsTopBar(onRegularAccountAdd, onSavingAccountAdd, onDebtAccountAdd)
+            AccountAppBar(onRegularAccountAdd, onSavingAccountAdd, onDebtAccountAdd)
         },
         backgroundColor = backgroundColor,
-        modifier = Modifier
-            .fillMaxSize()
-    ){
+        modifier = Modifier.fillMaxSize()
+    ) {
         Column {
             Spacer(modifier = Modifier.height(10.dp))
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                viewModel.getAllAccounts()
-                items(accounts){item ->
+                viewModel.getAllAccounts() // todo: посмотреть LaunchedEffect
+                items(accounts) { item ->
                     AccountListItem(account = item, onAccountEdit = onAccountEdit)
                 }
             }
@@ -86,9 +82,48 @@ fun AccountsScreen(
 }
 
 @Composable
+fun AccountAppBar(
+    onRegularAccountAdd: () -> Unit,
+    onSavingAccountAdd: () -> Unit,
+    onDebtAccountAdd: () -> Unit,
+) {
+    val showDialog = remember { mutableStateOf(false) }
+    TopAppBar(
+        backgroundColor = Color.White
+    ) {
+        WalletIconButton(
+            icon = Icons.Outlined.Menu,
+            description = "Menu icon",
+            onClick = {}
+        )
+        Text(
+            text = "Accounts",
+            fontFamily = splineSansMedium,
+            fontSize = 20.sp,
+            color = systemTextColor,
+        )
+        Spacer(Modifier.weight(1f, true))
+        WalletIconButton(
+            icon = Icons.Filled.Add,
+            description = "Add",
+            onClick = { showDialog.value = true }
+        )
+        if (showDialog.value) {
+            TypeAlertDialog(
+                showDialog = showDialog.value,
+                onDismiss = { showDialog.value = false },
+                onRegularAccountAdd = onRegularAccountAdd,
+                onSavingAccountAdd = onSavingAccountAdd,
+                onDebtAccountAdd = onDebtAccountAdd
+            )
+        }
+    }
+}
+
+@Composable
 fun AccountListItem(
     account: Account,
-    onAccountEdit: (Long) -> Unit
+    onAccountEdit: (Long, String) -> Unit
 ) {
     val paddingModifier = Modifier.padding(3.dp)
     Card(
@@ -97,113 +132,85 @@ fun AccountListItem(
             .width(355.dp)
             .height(70.dp)
             .clip(RoundedCornerShape(20.dp))
-            .clickable(onClick = { onAccountEdit(account.id) })
+            .clickable(onClick = { onAccountEdit(account.id, account.type) })
     ) {
-        Row {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .size(45.dp)
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(Color(account.iconColor))
-            ){
-                Icon(
-                    painter = painterResource(id = account.icon),
-                    contentDescription = " ",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(25.dp)
-                )
-            }
-            Column {
-                Text(
-                    text = account.name,
-                    fontFamily = splineSansMedium,
-                    fontSize = 15.sp,
-                    color = systemTextColor,
-                    modifier = Modifier.padding(top = 10.dp)
-                )
-                when(account.type){
-                    REGULAR -> {
-                        Text(
-                            text = account.balance.toString() + "$",
-                            color = systemTextColor,
-                            fontFamily = splineSansMedium,
-                        )
-                    }
-                    SAVING -> {
-                        Text(
-                            text = account.balance.toString() + "$" + " out of " + "${account.target}" + "$",
-                            color = systemTextColor,
-                            fontFamily = splineSansMedium,
-                        )
-                    }
-                    DEBT -> {
-                        Text(
-                            text = account.balance.toString() + "$",
-                            color = systemTextColor,
-                            fontFamily = splineSansMedium,
-                        )
-                    }
+        AccountListBody(account = account)
+    }
+}
+
+@Composable
+fun AccountListBody(
+    account: Account
+) {
+    Row {
+        IconBox(account = account)
+        Column {
+            Text(
+                text = account.name,
+                fontFamily = splineSansMedium,
+                fontSize = 15.sp,
+                color = systemTextColor,
+                modifier = Modifier.padding(top = 10.dp)
+            )
+            when (account.type) {
+                AccountType.REGULAR -> {
+                    Text(
+                        text = account.balance.toString() + "$",
+                        color = systemTextColor,
+                        fontFamily = splineSansMedium,
+                    )
+                }
+
+                AccountType.SAVING -> {
+                    Text(
+                        text = account.balance.toString() + "$" + " out of " + "${account.target}" + "$",
+                        color = systemTextColor,
+                        fontFamily = splineSansMedium,
+                    )
+                }
+
+                AccountType.DEBT -> {
+                    Text(
+                        text = account.balance.toString() + "$",
+                        color = systemTextColor,
+                        fontFamily = splineSansMedium,
+                    )
                 }
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Text(
-                    text = account.description,
-                    fontFamily = splineSansLight,
-                    fontStyle = FontStyle.Italic,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(22.dp)
-                )
-            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Text(
+                text = account.description,
+                fontFamily = splineSansLight,
+                fontStyle = FontStyle.Italic,
+                color = Color.Gray,
+                modifier = Modifier.padding(22.dp)
+            )
         }
     }
 }
 
 @Composable
-fun AccountsTopBar(
-    onRegularAccountAdd: () -> Unit,
-    onSavingAccountAdd: () -> Unit,
-    onDebtAccountAdd: () -> Unit,
+fun IconBox(
+    account: Account,
 ) {
-    val showDialog = remember { mutableStateOf(false) }
-
-    TopAppBar(
-        backgroundColor = Color.White
-    ){
-        IconButton(
-            onClick = {  },
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Menu,
-                contentDescription = "Menu icon",
-                tint = Color.Gray,
-                modifier = Modifier.size(25.dp)
-            )
-        }
-        Text(
-            text = "Accounts",
-            fontFamily = splineSansMedium,
-            fontSize = 20.sp,
-            color = systemTextColor,
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .padding(10.dp)
+            .size(45.dp)
+            .clip(RoundedCornerShape(15.dp))
+            .background(Color(account.iconColor))
+    ) {
+        Icon(
+            painter = painterResource(id = account.icon),
+            contentDescription = " ",
+            tint = Color.White,
+            modifier = Modifier.size(25.dp)
         )
-        Spacer(Modifier.weight(1f, true))
-        IconButton(onClick = { showDialog.value = true }) {
-            Icon(Icons.Filled.Add, contentDescription = "Add", modifier = Modifier.size(30.dp))
-            if(showDialog.value){
-                TypeAlertDialog (
-                    showDialog = showDialog.value,
-                    onDismiss = {showDialog.value = false},
-                    onRegularAccountAdd = onRegularAccountAdd,
-                    onSavingAccountAdd = onSavingAccountAdd,
-                    onDebtAccountAdd = onDebtAccountAdd
-                )
-            }
-        }
     }
 }
 
@@ -241,7 +248,7 @@ fun TypeAlertDialog(
 ) {
     val openDialog = remember { mutableStateOf(showDialog) }
 
-    if(openDialog.value){
+    if (openDialog.value) {
         AlertDialog(
             onDismissRequest = {
                 onDismiss()
@@ -252,9 +259,18 @@ fun TypeAlertDialog(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(5.dp))
-                    AlertItem(alertText = stringResource(id = R.string.regular_item), onAccountAdd = onRegularAccountAdd)
-                    AlertItem(alertText = stringResource(id = R.string.saving_item), onAccountAdd = onSavingAccountAdd)
-                    AlertItem(alertText = stringResource(id = R.string.debt_item), onAccountAdd = onDebtAccountAdd)
+                    AlertItem(
+                        alertText = stringResource(id = R.string.regular_item),
+                        onAccountAdd = onRegularAccountAdd
+                    )
+                    AlertItem(
+                        alertText = stringResource(id = R.string.saving_item),
+                        onAccountAdd = onSavingAccountAdd
+                    )
+                    AlertItem(
+                        alertText = stringResource(id = R.string.debt_item),
+                        onAccountAdd = onDebtAccountAdd
+                    )
                 }
             }
         )

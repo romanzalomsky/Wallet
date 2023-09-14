@@ -13,21 +13,34 @@ import com.zalomsky.wallet.presentation.accounts.edit.EditAccountScreen
 fun NavController.navigateToAddAccountScreen(state: String) =
     navigate("${MainDestinations.ADD_ACCOUNT_ROUTE}/$state", defaultNavOptions())
 
-fun NavController.navigateToEditAccountScreen(id: Long) =
-    navigate("${MainDestinations.EDIT_ACCOUNT_ROUTE}/$id", defaultNavOptions())
+fun NavController.navigateToEditAccountScreen(id: Long, state: String) =
+    navigate("${MainDestinations.EDIT_ACCOUNT_ROUTE}/$id/$state", defaultNavOptions())
 
 fun NavGraphBuilder.addAccountScreen(
     onBackPressed: () -> Unit
 ) {
     composable(MainDestinations.ADD_ACCOUNT_ROUTE + "/{state}", arguments = listOf(navArgument("state"){type = NavType.StringType})){
-        AddAccountScreen(onBackPressed = onBackPressed, it.arguments?.getString("state"))
+        val stateArgument = it.arguments?.getString("state").orEmpty()
+/*        val state = AccountType.valueOf(stateArgument)*/
+        val state = stateArgument
+        AddAccountScreen(onBackPressed = onBackPressed, state)
     }
 }
 
 fun NavGraphBuilder.editAccountScreen(
     onBackPressed: () -> Unit
 ){
-    composable(MainDestinations.EDIT_ACCOUNT_ROUTE + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})){
-        EditAccountScreen(upPress = onBackPressed, it.arguments?.getString("id"))
+    composable(
+        route = MainDestinations.EDIT_ACCOUNT_ROUTE + "/{id}" + "/{state}",
+        arguments = listOf(
+            navArgument("id"){type = NavType.StringType},
+            navArgument("state"){type = NavType.StringType}
+        )
+    ){
+        EditAccountScreen(
+            onBackPressed = onBackPressed,
+            it.arguments?.getString("state"),
+            it.arguments?.getString("id"),
+        )
     }
 }

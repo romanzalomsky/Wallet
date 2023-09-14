@@ -1,15 +1,15 @@
 package com.zalomsky.wallet.domain.repository
 
-import com.zalomsky.wallet.data.local.dao.CategoryRepositoryImpl
+import com.zalomsky.wallet.data.local.dao.CategoryDao
 import com.zalomsky.wallet.domain.model.Category
 import javax.inject.Inject
 
 class CategoryRepository @Inject constructor(
-    private val categoryRepositoryImpl: CategoryRepositoryImpl
+    private val categoryDao: CategoryDao
 ) {
-    suspend fun getAllCategories(): List<Category> = categoryRepositoryImpl.getAllCategories()
-    suspend fun insertCategory(category: Category) = categoryRepositoryImpl.insertCategory(category = category)
-    suspend fun deleteCategory(category: Category) = categoryRepositoryImpl.deleteCategory(category = category)
-    suspend fun getCategoryById(id: Long) = categoryRepositoryImpl.getCategoryById(categoryId = id)
-    suspend fun updateCategory(category: Category) = categoryRepositoryImpl.updateCategory(category = category)
+    suspend fun getAllCategories(): List<Category> = categoryDao.getAllCategories()
+    suspend fun insertCategory(category: Category) = categoryDao.insertCategory(category = category)
+    suspend fun deleteCategory(category: Category) = categoryDao.deleteCategory(category = category)
+    suspend fun getCategoryById(id: Long) = categoryDao.getCategoryById(categoryId = id)
+    suspend fun updateCategory(category: Category) = categoryDao.updateCategory(category = category)
 }

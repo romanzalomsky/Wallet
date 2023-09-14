@@ -8,7 +8,7 @@ import androidx.room.Update
 import com.zalomsky.wallet.domain.model.Category
 
 @Dao
-interface CategoryRepositoryImpl {
+interface CategoryDao {
 
     @Insert
     suspend fun insertCategory(category: Category)

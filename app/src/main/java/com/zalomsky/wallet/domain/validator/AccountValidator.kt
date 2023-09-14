@@ -1,9 +1,9 @@
-package com.zalomsky.wallet.domain.usecase
+package com.zalomsky.wallet.domain.validator
 
 import com.zalomsky.wallet.domain.model.Account
 import javax.inject.Inject
 
-class AccountValidationUseCase @Inject constructor(){
+class AccountValidator @Inject constructor(){
 
     operator fun invoke(account: Account): Result<Unit> =
         when {

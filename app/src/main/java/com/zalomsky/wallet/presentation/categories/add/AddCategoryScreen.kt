@@ -50,8 +50,8 @@ import com.zalomsky.wallet.presentation.listOfColors
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AddCategoryScreen(
-    onCategoryAdded: () -> Unit,
+fun AddCategoryScreen( // todo: слишком большая функция, разделить по элементам
+    onCategoryAdded: () -> Unit, // todo: неиспользуемые параметры
     upPress: () -> Unit
 ){
     val viewModel = hiltViewModel<AddCategoryScreenViewModel>()

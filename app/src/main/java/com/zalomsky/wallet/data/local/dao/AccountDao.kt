@@ -8,7 +8,7 @@ import androidx.room.Update
 import com.zalomsky.wallet.domain.model.Account
 
 @Dao
-interface AccountRepositoryImpl {
+interface AccountDao {
 
     @Insert
     suspend fun insertAccount(account: Account)

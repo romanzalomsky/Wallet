@@ -7,7 +7,7 @@ import com.zalomsky.wallet.presentation.listOfAccountsIcons
 import com.zalomsky.wallet.presentation.listOfColors
 
 @Entity
-data class Account(
+data class Account( // todo: сделать отдельную модель для бд (AccountEntity)
 
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
@@ -21,7 +21,6 @@ data class Account(
     @ColumnInfo(name = "type", defaultValue = "1")
     var type: String,
 
-    @ColumnInfo(name = "icon")
     val icon: Int,
     val iconColor: Int
 ){
@@ -33,7 +32,7 @@ data class Account(
             balance = 0.0,
             target = 0.0,
             icon = listOfAccountsIcons.random(),
-            type = AccountType.REGULAR,
+            type = "",
             iconColor = listOfColors.random()
         )
     }

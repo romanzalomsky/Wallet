@@ -3,8 +3,8 @@ package com.zalomsky.wallet.data.local
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.zalomsky.wallet.data.local.dao.AccountRepositoryImpl
-import com.zalomsky.wallet.data.local.dao.CategoryRepositoryImpl
+import com.zalomsky.wallet.data.local.dao.AccountDao
+import com.zalomsky.wallet.data.local.dao.CategoryDao
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.domain.model.Category
 
@@ -15,9 +15,9 @@ import com.zalomsky.wallet.domain.model.Category
 )
 abstract class AppDatabase: RoomDatabase() {
 
-    abstract fun accountDao(): AccountRepositoryImpl
+    abstract fun accountDao(): AccountDao
 
-    abstract fun categoryDao(): CategoryRepositoryImpl
+    abstract fun categoryDao(): CategoryDao
 
 /*    @DeleteColumn(tableName = "Account", columnName = "icon")*/
 /*    class Migration9To10: AutoMigrationSpec*/

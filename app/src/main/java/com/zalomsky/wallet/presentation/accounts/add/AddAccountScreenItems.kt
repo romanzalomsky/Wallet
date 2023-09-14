@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -20,35 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zalomsky.wallet.presentation.common.color.systemColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 
-
-@Composable
-fun AccountTypeField(
-    text: String
-) {
-    Column {
-        Text(
-            text = "Account type: " + text,
-            fontSize = 16.sp,
-            color = Color.White,
-            fontFamily = splineSansMedium,
-            modifier = Modifier
-                .padding(horizontal = 15.dp)
-        )
-    }
-}
-
 @Composable
 fun TargetInputField(
     labelText: String,
-    labelModifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
     value: Double,
     onNewValue: (Double) -> Unit
 ) {
@@ -59,7 +37,7 @@ fun TargetInputField(
             fontSize = 16.sp,
             color = systemTextColor,
             fontFamily = splineSansMedium,
-            modifier = labelModifier
+            modifier = Modifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
@@ -69,7 +47,7 @@ fun TargetInputField(
                 val newValue = newText.toDoubleOrNull() ?: 0.0
                 onNewValue(newValue)
             },
-            modifier = textFieldModifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
                 .height(56.dp),
@@ -91,8 +69,6 @@ fun TargetInputField(
 @Composable
 fun NameInputFields(
     labelText: String,
-    labelModifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
     value: String,
     onNewValue: (String) -> Unit
 ) {
@@ -102,13 +78,13 @@ fun NameInputFields(
             fontSize = 16.sp,
             color = systemTextColor,
             fontFamily = splineSansMedium,
-            modifier = labelModifier
+            modifier = Modifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
             value = value,
             onValueChange = onNewValue,
-            modifier = textFieldModifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
                 .height(56.dp),
@@ -130,8 +106,6 @@ fun NameInputFields(
 @Composable
 fun DescriptionInputFields(
     labelText: String,
-    labelModifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
     value: String,
     onNewValue: (String) -> Unit
 ) {
@@ -141,13 +115,13 @@ fun DescriptionInputFields(
             fontSize = 16.sp,
             color = systemTextColor,
             fontFamily = splineSansMedium,
-            modifier = labelModifier
+            modifier = Modifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
             value = value,
             onValueChange = onNewValue,
-            modifier = textFieldModifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
                 .height(56.dp),
@@ -169,8 +143,6 @@ fun DescriptionInputFields(
 @Composable
 fun BalanceInputFields(
     labelText: String,
-    labelModifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier,
     value: Double,
     onNewValue: (Double) -> Unit
 ) {
@@ -181,7 +153,7 @@ fun BalanceInputFields(
             fontSize = 16.sp,
             color = systemTextColor,
             fontFamily = splineSansMedium,
-            modifier = labelModifier
+            modifier = Modifier
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
@@ -191,7 +163,7 @@ fun BalanceInputFields(
                 val newValue = newText.toDoubleOrNull() ?: 0.0
                 onNewValue(newValue)
             },
-            modifier = textFieldModifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
                 .height(56.dp),
@@ -210,23 +182,3 @@ fun BalanceInputFields(
     }
 }
 
-@Composable
-fun ConfirmButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    buttonText: String
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 14.dp)
-            .height(48.dp),
-        shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = systemColor
-        )
-    ) {
-        Text(text = buttonText, color = Color.White, textAlign = TextAlign.Center)
-    }
-}

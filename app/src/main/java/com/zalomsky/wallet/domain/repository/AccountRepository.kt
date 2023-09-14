@@ -1,15 +1,15 @@
 package com.zalomsky.wallet.domain.repository
 
-import com.zalomsky.wallet.data.local.dao.AccountRepositoryImpl
+import com.zalomsky.wallet.data.local.dao.AccountDao
 import com.zalomsky.wallet.domain.model.Account
 import javax.inject.Inject
 
 class AccountRepository @Inject constructor(
-    private val accountRepositoryImpl: AccountRepositoryImpl
+    private val accountDao: AccountDao
 ){
-    suspend fun getAllAccounts(): List<Account> = accountRepositoryImpl.getAllAccounts()
-    suspend fun insertAccount(account: Account) = accountRepositoryImpl.insertAccount(account = account)
-    suspend fun deleteAccount(account: Account) = accountRepositoryImpl.deleteAccount(account = account)
-    suspend fun getAccountById(id: Long) = accountRepositoryImpl.getAccountById(accountId = id)
-    suspend fun updateAccount(account: Account) = accountRepositoryImpl.updateAccount(account = account)
+    suspend fun getAllAccounts(): List<Account> = accountDao.getAllAccounts()
+    suspend fun insertAccount(account: Account) = accountDao.insertAccount(account = account)
+    suspend fun deleteAccount(account: Account) = accountDao.deleteAccount(account = account)
+    suspend fun getAccountById(id: Long) = accountDao.getAccountById(accountId = id)
+    suspend fun updateAccount(account: Account) = accountDao.updateAccount(account = account)
 }

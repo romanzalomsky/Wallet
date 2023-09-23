@@ -1,5 +1,6 @@
 package com.zalomsky.wallet.presentation.accounts.edit
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -66,24 +67,20 @@ class EditAccountScreenViewModel @Inject constructor(
     fun deleteAccounts(onSuccess: () -> Unit) {
         viewModelScope.launch {
             account.value?.let {
-                deleteAccountUseCase(account = it)
+                deleteAccountUseCase.invoke(account = it)
                 onSuccess()
             }
         }
     }
 
-    /*    fun updateAccounts(account: Account, onSuccess: () -> Unit){ todo: удалить закоменченое все если не надо, если надо - раскоментить
-            viewModelScope.launch(Dispatchers.IO) {
-                updateAccountUseCase.invoke(account = account)
-                onSuccess()
-            }
-        }*/
-
     fun updateAccount(onAccountUpdated: () -> Unit) {
         viewModelScope.launch {
-            updateAccountUseCase // todo: убрать !!
-                .runCatching {
+            updateAccountUseCase(uiState.value.account)
+                .onSuccess {
                     onAccountUpdated()
+                }
+                .onFailure {
+                    Log.d("Oshibka", "ERROR")
                 }
         }
     }

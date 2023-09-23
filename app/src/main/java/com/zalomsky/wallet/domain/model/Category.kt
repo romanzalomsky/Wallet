@@ -11,10 +11,20 @@ data class Category(
     val id: Long = 0,
 
     val name: String,
-    val icon: Int,
+    var icon: Int,
 
     @ColumnInfo(name = "circleColor", defaultValue = "1")
     val circleColor: Int,
 
     val amount: Double
-)
+){
+    companion object{
+        fun defaultInstance() = Category(
+
+            name = "",
+            icon = 2131099650,
+            circleColor = -16711681,
+            amount = 0.0
+        )
+    }
+}

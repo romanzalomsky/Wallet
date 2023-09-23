@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.model.Category
 import com.zalomsky.wallet.domain.usecase.DeleteCategoryUseCase
 import com.zalomsky.wallet.domain.usecase.GetAllCategoriesUseCase
+import com.zalomsky.wallet.domain.usecase.GetCategoryByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoriesScreenViewModel @Inject constructor(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val getCategoryByIdUseCase: GetCategoryByIdUseCase,
 ): ViewModel() {
 
     private val _categories = MutableLiveData<List<Category>>()
@@ -27,14 +29,22 @@ class CategoriesScreenViewModel @Inject constructor(
     val category: LiveData<Category>
         get() = _category
 
-    init {
+/*    init {
         getAllCategories()
-    }
+    }*/
 
     fun getAllCategories(){
         viewModelScope.launch {
             getAllCategoriesUseCase.invoke().let {
                 _categories.postValue(it)
+            }
+        }
+    }
+
+    fun getCategoryById(id: Long){
+        viewModelScope.launch {
+            getCategoryByIdUseCase.invoke(id = id).let {
+                _category.postValue(it)
             }
         }
     }

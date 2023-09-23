@@ -61,6 +61,7 @@ class AddAccountScreenViewModel @Inject constructor(
             addAccountUseCase(uiState.value.account)
                 .onSuccess {
                     onSuccess()
+
                 }
                 .onFailure {
                     // todo: show toast/snackbar

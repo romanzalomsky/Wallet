@@ -15,7 +15,9 @@ import com.zalomsky.wallet.presentation.accounts.navigateToAddAccountScreen
 import com.zalomsky.wallet.presentation.accounts.navigateToEditAccountScreen
 import com.zalomsky.wallet.presentation.categories.CategoriesScreen
 import com.zalomsky.wallet.presentation.categories.addCategoryScreen
+import com.zalomsky.wallet.presentation.categories.editCategoryScreen
 import com.zalomsky.wallet.presentation.categories.navigateToAddCategoryScreen
+import com.zalomsky.wallet.presentation.categories.navigateToEditCategoryScreen
 import com.zalomsky.wallet.presentation.overview.OverviewScreen
 import com.zalomsky.wallet.presentation.transactions.TransactionsScreen
 
@@ -37,6 +39,9 @@ fun NavGraphBuilder.walletNavGraph(
             onBackPressed = upPress
         )
         addCategoryScreen (
+            onBackPressed = upPress
+        )
+        editCategoryScreen (
             onBackPressed = upPress
         )
     }
@@ -65,6 +70,9 @@ fun NavGraphBuilder.bottomRoutes(
         CategoriesScreen(
             onCategoryAdd = {
                 navController.navigateToAddCategoryScreen()
+            },
+            onCategoryEdit = { categoryId ->
+                navController.navigateToEditCategoryScreen(id = categoryId)
             }
         )
     }

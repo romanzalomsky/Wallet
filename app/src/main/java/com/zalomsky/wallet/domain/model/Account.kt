@@ -3,7 +3,6 @@ package com.zalomsky.wallet.domain.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.zalomsky.wallet.presentation.listOfAccountsIcons
 import com.zalomsky.wallet.presentation.listOfColors
 
 @Entity
@@ -21,8 +20,8 @@ data class Account( // todo: сделать отдельную модель дл
     @ColumnInfo(name = "type", defaultValue = "1")
     var type: String,
 
-    val icon: Int,
-    val iconColor: Int
+    var icon: Int,
+    var iconColor: Int
 ){
     companion object {
 
@@ -31,7 +30,7 @@ data class Account( // todo: сделать отдельную модель дл
             description = "",
             balance = 0.0,
             target = 0.0,
-            icon = listOfAccountsIcons.random(),
+            icon = 2131099655,
             type = "",
             iconColor = listOfColors.random()
         )

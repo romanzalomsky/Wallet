@@ -21,9 +21,7 @@ fun NavGraphBuilder.addAccountScreen(
 ) {
     composable(MainDestinations.ADD_ACCOUNT_ROUTE + "/{state}", arguments = listOf(navArgument("state"){type = NavType.StringType})){
         val stateArgument = it.arguments?.getString("state").orEmpty()
-/*        val state = AccountType.valueOf(stateArgument)*/
-        val state = stateArgument
-        AddAccountScreen(onBackPressed = onBackPressed, state)
+        AddAccountScreen(onBackPressed = onBackPressed, stateArgument)
     }
 }
 

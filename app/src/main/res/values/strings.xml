@@ -24,6 +24,8 @@
     <string name="current_value_label">Current value</string>
     <string name="target_label">Target</string>
 
+    <string name="amount_label">Amount</string>
+
     <!-- Beauty -->
     <string name="dots_beauty">. . .</string>
 
@@ -35,5 +37,8 @@
     <string name="regular_item">Regular</string>
     <string name="saving_item">Saving</string>
     <string name="debt_item">Debt</string>
+
+    <string name="icon_item">Icon</string>
+    <string name="icon_color_item">Icon Color</string>
 
 </resources>

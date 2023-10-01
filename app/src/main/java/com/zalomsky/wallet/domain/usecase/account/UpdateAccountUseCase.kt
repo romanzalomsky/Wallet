@@ -1,4 +1,4 @@
-package com.zalomsky.wallet.domain.usecase
+package com.zalomsky.wallet.domain.usecase.account
 
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.domain.repository.AccountRepository

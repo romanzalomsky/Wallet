@@ -1,29 +1,22 @@
 package com.zalomsky.wallet.presentation.accounts
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zalomsky.wallet.domain.model.Account
-import com.zalomsky.wallet.domain.usecase.GetAllAccountsUseCase
+import com.zalomsky.wallet.domain.usecase.account.GetAllAccountsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class AccountsScreenViewModel @Inject constructor(
-    private val getAllAccountsUseCase: GetAllAccountsUseCase
+    getAllAccountsUseCase: GetAllAccountsUseCase
 ) : ViewModel() {
 
-    private val _accounts = MutableLiveData<List<Account>>()
-    val accounts: LiveData<List<Account>>
-        get() = _accounts
-
-    fun getAllAccounts() {
-        viewModelScope.launch {
-            getAllAccountsUseCase().let {
-                _accounts.postValue(it)
-            }
-        }
-    }
+    val accounts = getAllAccountsUseCase.invoke()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(1_000),
+            initialValue = emptyList()
+        )
 }

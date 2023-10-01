@@ -6,15 +6,17 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.zalomsky.wallet.domain.model.Account
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AccountDao {
+
 
     @Insert
     suspend fun insertAccount(account: Account)
 
     @Query("SELECT * FROM account")
-    suspend fun getAllAccounts(): List<Account>
+    fun getAllAccounts(): Flow<List<Account>>
 
     @Delete
     suspend fun deleteAccount(account: Account)

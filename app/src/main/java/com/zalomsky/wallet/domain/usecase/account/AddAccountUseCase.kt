@@ -1,4 +1,4 @@
-package com.zalomsky.wallet.domain.usecase
+package com.zalomsky.wallet.domain.usecase.account
 
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.domain.repository.AccountRepository
@@ -13,10 +13,10 @@ class AddAccountUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(account: Account): Result<Unit> =
         withContext(Dispatchers.IO){
-            accountValidator.invoke(account).onFailure{
+            accountValidator.invoke(account)
+                .onFailure{
                 return@withContext Result.failure(it)
             }
-
             val result = runCatching {
                 accountRepository.insertAccount(account = account)
             }

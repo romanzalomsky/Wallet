@@ -1,8 +1,10 @@
 package com.zalomsky.wallet.presentation.categories
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,15 +22,24 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,7 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zalomsky.wallet.domain.model.Category
-import com.zalomsky.wallet.presentation.accounts.WalletIconButton
+import com.zalomsky.wallet.presentation.WalletIconButton
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
@@ -65,28 +76,7 @@ fun CategoriesScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Spacer(Modifier.height(10.dp))
-            Card(
-                elevation = 0.dp,
-                modifier = Modifier
-                    .width(355.dp)
-                    .height(300.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .clickable(onClick = {})
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    PieChart(
-                        data = mapOf(
-                            Pair("s", 12.2),
-                            Pair("q", 13.2),
-                            Pair("w", 14.2),
-                            Pair("d", 12.2),
-                            Pair("a", 15.2)
-                        )
-                    )
-                }
-            }
+            CategoryPieChart()
             Spacer(Modifier.height(10.dp))
             LazyVerticalGrid(columns = GridCells.Fixed(2)){
                 viewModel.getAllCategories()
@@ -128,11 +118,25 @@ fun CategoriesTopBar(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryListItem(
     onCategoryEdit: (Long) -> Unit,
     category: Category
 ){
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    if(showBottomSheet){
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            sheetState = sheetState
+        ) {
+
+
+            BottomSheetContent(category)
+        }
+    }
     val paddingModifier = Modifier.padding(3.dp)
     Card(
         elevation = 0.dp,
@@ -141,7 +145,12 @@ fun CategoryListItem(
             .width(200.dp)
             .height(70.dp)
             .clip(RoundedCornerShape(20.dp))
-            .clickable(onClick = { onCategoryEdit(category.id) })
+            .combinedClickable(
+                onClick = { onCategoryEdit(category.id) },
+                onLongClick = {
+                    showBottomSheet = true
+                }
+            )
     ){
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -180,6 +189,61 @@ fun CategoryListItem(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
+@Composable
+fun BottomSheetContent(
+    category: Category
+) {
+    Column(modifier = Modifier.height(500.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier
+                .padding(15.dp)
+                .fillMaxWidth(),
+        ) {
+            Text(
+                text = "${category.name}",
+                fontFamily = splineSansMedium,
+                fontSize = 23.sp,
+                color = systemTextColor
+            )
+            var value by remember { mutableStateOf("") }
+            TextField(
+                value = value,
+                onValueChange = {
+                    value = it
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun CategoryPieChart() {
+    Card(
+        elevation = 0.dp,
+        modifier = Modifier
+            .width(355.dp)
+            .height(300.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .clickable(onClick = {})
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center
+        ) {
+            PieChart(
+                data = mapOf(
+                    Pair("s", 12.2),
+                    Pair("q", 13.2),
+                    Pair("w", 14.2),
+                    Pair("d", 12.2),
+                    Pair("a", 15.2)
+                )
+            )
+        }
+    }
+}
+
 @Composable
 fun CategorySettings(
     onClick: () -> Unit
@@ -188,10 +252,15 @@ fun CategorySettings(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
-        WalletIconButton(
-            icon = Icons.Outlined.MoreVert,
-            description = "",
-            onClick = onClick
-        )
+        IconButton(
+            onClick = onClick,
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.MoreVert,
+                contentDescription = "",
+                tint = Color.Gray,
+                modifier = Modifier.size(25.dp)
+            )
+        }
     }
 }

@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.model.Category
-import com.zalomsky.wallet.domain.usecase.DeleteCategoryUseCase
-import com.zalomsky.wallet.domain.usecase.GetCategoryByIdUseCase
-import com.zalomsky.wallet.domain.usecase.UpdateCategoryUseCase
+import com.zalomsky.wallet.domain.usecase.category.DeleteCategoryUseCase
+import com.zalomsky.wallet.domain.usecase.category.GetCategoryByIdUseCase
+import com.zalomsky.wallet.domain.usecase.category.UpdateCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

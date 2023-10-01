@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.model.Account
-import com.zalomsky.wallet.domain.usecase.DeleteAccountUseCase
-import com.zalomsky.wallet.domain.usecase.GetAccountByIdUseCase
-import com.zalomsky.wallet.domain.usecase.UpdateAccountUseCase
+import com.zalomsky.wallet.domain.usecase.account.DeleteAccountUseCase
+import com.zalomsky.wallet.domain.usecase.account.GetAccountByIdUseCase
+import com.zalomsky.wallet.domain.usecase.account.UpdateAccountUseCase
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,7 @@ class EditAccountScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AccountUiState())
     val uiState: StateFlow<AccountUiState> = _uiState.asStateFlow()
 
-    fun getAccountById(id: Long) {
+    fun loadAccount(id: Long) {
         viewModelScope.launch {
             getAccountByIdUseCase(id).let {
                 _account.postValue(it) // todo: post когда с другого потока, _account.value = newValue когда с main потока
@@ -85,4 +85,17 @@ class EditAccountScreenViewModel @Inject constructor(
         }
     }
 
+    fun onEvent(event: AccountEvent) {
+        when(event){
+            is AccountEvent.Add -> {}
+            is AccountEvent.Update -> updateAccount(event.onUpdated)
+            is AccountEvent.Load -> loadAccount(event.accountId)
+        }
+    }
+}
+
+sealed interface AccountEvent {
+    data class Add(val onAdded: () -> Unit) : AccountEvent
+    data class Update(val onUpdated: () -> Unit) : AccountEvent
+    data class Load(val accountId: Long) : AccountEvent
 }

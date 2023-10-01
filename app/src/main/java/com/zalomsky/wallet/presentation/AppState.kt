@@ -16,6 +16,7 @@ import com.zalomsky.wallet.presentation.common.color.purple
 import com.zalomsky.wallet.presentation.common.color.red
 import com.zalomsky.wallet.presentation.common.color.yellow
 import com.zalomsky.wallet.presentation.common.icons.cardIcon
+import com.zalomsky.wallet.presentation.common.icons.cardIcon1
 import com.zalomsky.wallet.presentation.common.icons.cardIcon2
 import com.zalomsky.wallet.presentation.common.icons.cardIcon3
 import com.zalomsky.wallet.presentation.common.icons.familyCategoryIcon
@@ -26,7 +27,7 @@ import com.zalomsky.wallet.presentation.common.icons.shoppingCategoryIcon
 import com.zalomsky.wallet.presentation.common.icons.sportCategoryIcon
 import com.zalomsky.wallet.presentation.common.icons.transportCategoryIcon
 
-val listOfAccountsIcons = listOf(cardIcon, cardIcon2, cardIcon3)
+val listOfAccountsIcons = listOf(cardIcon, cardIcon1, cardIcon2, cardIcon3)
 
 val listOfColors = listOf(grey, blue, red, yellow, green,
                           purple, aqua, black, pink, gold,

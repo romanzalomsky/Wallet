@@ -23,7 +23,6 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,36 +32,34 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
-import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.domain.model.AccountType
-import com.zalomsky.wallet.presentation.accounts.WalletIconButton
+import com.zalomsky.wallet.presentation.WalletIconButton
+import com.zalomsky.wallet.presentation.accounts.AccountUiState
 import com.zalomsky.wallet.presentation.accounts.add.BalanceInputFields
-import com.zalomsky.wallet.presentation.accounts.add.DescriptionInputFields
-import com.zalomsky.wallet.presentation.accounts.add.NameInputFields
+import com.zalomsky.wallet.presentation.accounts.add.StringInputField
 import com.zalomsky.wallet.presentation.accounts.add.TargetInputField
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.aksharMedium
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
-import com.zalomsky.wallet.presentation.listOfAccountsIcons
-import com.zalomsky.wallet.presentation.listOfColors
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
 fun EditAccountScreen(
     onBackPressed: () -> Unit,
     state: String?,
-    id: String?
+    id: Long
 ) {
     val viewModel: EditAccountScreenViewModel = hiltViewModel()
-    val account = viewModel.account.observeAsState().value
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = id, block = { id?.toLong()?.let { viewModel.getAccountById(it) } })
+    LaunchedEffect(id) {
+        viewModel.onEvent(AccountEvent.Load(id))
+    }
 
     Scaffold(
         topBar = {
-            EditAccountAppBar(
+            UpdateAccountAppBar(
                 onUpdateAccount = { viewModel.updateAccount(onBackPressed) },
                 upPress = onBackPressed
             )
@@ -71,22 +68,21 @@ fun EditAccountScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        account?.let { account ->
-            EditAccountView(
-                state = state,
-                account = account,
-                onNameChange = viewModel::onNameChange,
-                onDescriptionChange = viewModel::onDescriptionChange,
-                onBalanceChange = viewModel::onBalanceChange,
-                onTargetChange = viewModel::onTargetChange,
-                onDeleteAccount = { viewModel.deleteAccounts(onBackPressed) }
-            )
-        }
+        Text(text = id.toString())
+        UpdateAccountView(
+            state = state,
+            uiState = uiState,
+            onNameChange = viewModel::onNameChange,
+            onDescriptionChange = viewModel::onDescriptionChange,
+            onBalanceChange = viewModel::onBalanceChange,
+            onTargetChange = viewModel::onTargetChange,
+            onDeleteAccount = { viewModel.deleteAccounts(onBackPressed) }
+        )
     }
 }
 
 @Composable
-fun EditAccountAppBar(
+fun UpdateAccountAppBar(
     onUpdateAccount: () -> Unit,
     upPress: () -> Unit
 ) {
@@ -114,9 +110,9 @@ fun EditAccountAppBar(
 }
 
 @Composable
-fun EditAccountView(
+fun UpdateAccountView(
     state: String?,
-    account: Account,
+    uiState: AccountUiState,
     onNameChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
     onBalanceChange: (Double) -> Unit,
@@ -127,28 +123,25 @@ fun EditAccountView(
         modifier = Modifier.padding(15.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        NameInputFields(
+        StringInputField(
             labelText = stringResource(id = R.string.name_label),
-            value = account.name,
+            value = uiState.account.name,
             onNewValue = onNameChange
         )
-        DescriptionInputFields(
+        StringInputField(
             labelText = stringResource(id = R.string.description_label),
-            value = account.description,
+            value = uiState.account.description,
             onNewValue = onDescriptionChange
         )
         BalanceInputFields(
             labelText = stringResource(id = R.string.balance_label),
-            value = account.balance,
+            value = uiState.account.balance,
             onNewValue = onBalanceChange
         )
-        account.iconColor = listOfColors.random()
-        account.icon = listOfAccountsIcons.random()
-        account.type = state.toString()
         if (state == AccountType.SAVING) {
             TargetInputField(
                 labelText = stringResource(id = R.string.target_label),
-                value = account.target,
+                value = uiState.account.target,
                 onNewValue = onTargetChange
             )
         }

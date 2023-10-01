@@ -31,14 +31,16 @@ fun NavGraphBuilder.editAccountScreen(
     composable(
         route = MainDestinations.EDIT_ACCOUNT_ROUTE + "/{id}" + "/{state}",
         arguments = listOf(
-            navArgument("id"){type = NavType.StringType},
+            navArgument("id"){type = NavType.LongType},
             navArgument("state"){type = NavType.StringType}
         )
     ){
-        EditAccountScreen(
-            onBackPressed = onBackPressed,
-            it.arguments?.getString("state"),
-            it.arguments?.getString("id"),
-        )
+        it.arguments?.let { it1 ->
+            EditAccountScreen(
+                onBackPressed = onBackPressed,
+                it.arguments?.getString("state"),
+                it1.getLong("id"),
+            )
+        }
     }
 }

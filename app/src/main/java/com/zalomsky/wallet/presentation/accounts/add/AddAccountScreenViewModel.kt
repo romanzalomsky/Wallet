@@ -2,7 +2,7 @@ package com.zalomsky.wallet.presentation.accounts.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zalomsky.wallet.domain.usecase.AddAccountUseCase
+import com.zalomsky.wallet.domain.usecase.account.AddAccountUseCase
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,24 +44,11 @@ class AddAccountScreenViewModel @Inject constructor(
         }
     }
 
-    fun onIconChange(newValue: Int) { // delete unused functions
-        _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(icon = newValue))
-        }
-    }
-
-    fun onIconColor(newValue: Int) {
-        _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(iconColor = newValue))
-        }
-    }
-
     fun addAccount(onSuccess: () -> Unit) {
         viewModelScope.launch {
             addAccountUseCase(uiState.value.account)
                 .onSuccess {
                     onSuccess()
-
                 }
                 .onFailure {
                     // todo: show toast/snackbar

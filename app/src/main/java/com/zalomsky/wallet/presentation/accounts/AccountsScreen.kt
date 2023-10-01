@@ -1,6 +1,7 @@
 package com.zalomsky.wallet.presentation.accounts
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,9 +41,11 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.Account
 import com.zalomsky.wallet.domain.model.AccountType
+import com.zalomsky.wallet.presentation.WalletIconButton
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansLight
@@ -57,7 +60,7 @@ fun AccountsScreen(
     onAccountEdit: (Long, String) -> Unit
 ) {
     val viewModel: AccountsScreenViewModel = hiltViewModel()
-    val accounts = viewModel.accounts.observeAsState(listOf()).value
+    val accounts by viewModel.accounts.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -72,7 +75,6 @@ fun AccountsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                viewModel.getAllAccounts() // todo: посмотреть LaunchedEffect
                 items(accounts) { item ->
                     AccountListItem(account = item, onAccountEdit = onAccountEdit)
                 }
@@ -81,6 +83,7 @@ fun AccountsScreen(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AccountAppBar(
     onRegularAccountAdd: () -> Unit,
@@ -88,6 +91,7 @@ fun AccountAppBar(
     onDebtAccountAdd: () -> Unit,
 ) {
     val showDialog = remember { mutableStateOf(false) }
+
     TopAppBar(
         backgroundColor = Color.White
     ) {
@@ -160,7 +164,6 @@ fun AccountListBody(
                         fontFamily = splineSansMedium,
                     )
                 }
-
                 AccountType.SAVING -> {
                     Text(
                         text = account.balance.toString() + "$" + " out of " + "${account.target}" + "$",
@@ -168,7 +171,6 @@ fun AccountListBody(
                         fontFamily = splineSansMedium,
                     )
                 }
-
                 AccountType.DEBT -> {
                     Text(
                         text = account.balance.toString() + "$",
@@ -217,6 +219,7 @@ fun IconBox(
 @Composable
 fun AlertItem(
     alertText: String,
+    icon: Int,
     onAccountAdd: () -> Unit
 ) {
     Box(
@@ -228,7 +231,15 @@ fun AlertItem(
             .padding(horizontal = 25.dp)
             .clickable(onClick = onAccountAdd)
     ) {
-        Row {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Image(
+                painter = painterResource(id = icon),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(30.dp)
+            )
             Text(
                 text = alertText,
                 fontSize = 20.sp,
@@ -261,18 +272,28 @@ fun TypeAlertDialog(
                     Spacer(modifier = Modifier.height(5.dp))
                     AlertItem(
                         alertText = stringResource(id = R.string.regular_item),
+                        icon = R.drawable.regular_acc,
                         onAccountAdd = onRegularAccountAdd
                     )
                     AlertItem(
                         alertText = stringResource(id = R.string.saving_item),
+                        icon = R.drawable.saving_acc,
                         onAccountAdd = onSavingAccountAdd
                     )
                     AlertItem(
                         alertText = stringResource(id = R.string.debt_item),
+                        icon = R.drawable.debt_acc,
                         onAccountAdd = onDebtAccountAdd
                     )
                 }
             }
         )
     }
+}
+
+@Composable
+fun NavDrawer(
+
+) {
+
 }

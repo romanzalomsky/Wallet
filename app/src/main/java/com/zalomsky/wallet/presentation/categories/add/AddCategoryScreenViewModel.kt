@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.model.Category
-import com.zalomsky.wallet.domain.usecase.AddCategoryUseCase
+import com.zalomsky.wallet.domain.usecase.category.AddCategoryUseCase
 import com.zalomsky.wallet.presentation.categories.CategoryUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

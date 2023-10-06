@@ -1,6 +1,8 @@
 package com.zalomsky.wallet.presentation.categories.add
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -66,6 +69,20 @@ fun IconAlertItem(
                 IconPage(icon = category, onIconAdd = onIconAdd)
             }
         }
+    }
+}
+
+@Composable
+fun ColorPage(
+    iconColor: Int,
+    onColorAdd: () -> Unit
+) {
+    Canvas(modifier = Modifier.size(35.dp).clickable(onClick = onColorAdd)) {
+        drawCircle(
+            color = Color(iconColor),
+            radius = size.minDimension / 2,
+            center = Offset(size.width / 2, size.height / 2)
+        )
     }
 }
 

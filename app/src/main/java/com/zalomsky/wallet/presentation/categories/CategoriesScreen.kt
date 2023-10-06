@@ -132,8 +132,6 @@ fun CategoryListItem(
             onDismissRequest = { showBottomSheet = false },
             sheetState = sheetState
         ) {
-
-
             BottomSheetContent(category)
         }
     }

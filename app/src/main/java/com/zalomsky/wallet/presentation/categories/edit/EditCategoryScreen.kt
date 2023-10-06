@@ -11,7 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zalomsky.wallet.presentation.accounts.edit.ButtonDelete
+import com.zalomsky.wallet.presentation.accounts.update.ButtonDelete
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

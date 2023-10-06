@@ -8,7 +8,7 @@ import androidx.navigation.navArgument
 import com.zalomsky.wallet.MainDestinations
 import com.zalomsky.wallet.defaultNavOptions
 import com.zalomsky.wallet.presentation.accounts.add.AddAccountScreen
-import com.zalomsky.wallet.presentation.accounts.edit.EditAccountScreen
+import com.zalomsky.wallet.presentation.accounts.update.EditAccountScreen
 
 fun NavController.navigateToAddAccountScreen(state: String) =
     navigate("${MainDestinations.ADD_ACCOUNT_ROUTE}/$state", defaultNavOptions())

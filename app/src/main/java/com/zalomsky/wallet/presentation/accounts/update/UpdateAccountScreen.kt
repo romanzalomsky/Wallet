@@ -1,8 +1,10 @@
-package com.zalomsky.wallet.presentation.accounts.edit
+package com.zalomsky.wallet.presentation.accounts.update
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +12,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -23,6 +31,9 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,15 +44,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.AccountType
+import com.zalomsky.wallet.presentation.WalletAlertDialog
+import com.zalomsky.wallet.presentation.WalletIconBox
 import com.zalomsky.wallet.presentation.WalletIconButton
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
 import com.zalomsky.wallet.presentation.accounts.add.BalanceInputFields
 import com.zalomsky.wallet.presentation.accounts.add.StringInputField
 import com.zalomsky.wallet.presentation.accounts.add.TargetInputField
+import com.zalomsky.wallet.presentation.categories.add.ColorPage
+import com.zalomsky.wallet.presentation.categories.add.IconPage
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.aksharMedium
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
+import com.zalomsky.wallet.presentation.listOfAccountsIcons
+import com.zalomsky.wallet.presentation.listOfColors
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
@@ -52,6 +69,7 @@ fun EditAccountScreen(
 ) {
     val viewModel: EditAccountScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val account = viewModel.uiState.value.account // TODO:
 
     LaunchedEffect(id) {
         viewModel.onEvent(AccountEvent.Load(id))
@@ -60,7 +78,7 @@ fun EditAccountScreen(
     Scaffold(
         topBar = {
             UpdateAccountAppBar(
-                onUpdateAccount = { viewModel.updateAccount(onBackPressed) },
+                onUpdateAccount = { viewModel.onEvent(AccountEvent.Update(onBackPressed)) },
                 upPress = onBackPressed
             )
         },
@@ -68,7 +86,6 @@ fun EditAccountScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Text(text = id.toString())
         UpdateAccountView(
             state = state,
             uiState = uiState,
@@ -76,7 +93,7 @@ fun EditAccountScreen(
             onDescriptionChange = viewModel::onDescriptionChange,
             onBalanceChange = viewModel::onBalanceChange,
             onTargetChange = viewModel::onTargetChange,
-            onDeleteAccount = { viewModel.deleteAccounts(onBackPressed) }
+            onDeleteAccount = { viewModel.deleteAccounts(account, onBackPressed) }
         )
     }
 }
@@ -109,6 +126,7 @@ fun UpdateAccountAppBar(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UpdateAccountView(
     state: String?,
@@ -119,6 +137,10 @@ fun UpdateAccountView(
     onTargetChange: (Double) -> Unit,
     onDeleteAccount: () -> Unit
 ) {
+    val showAlertDialog = remember { mutableStateOf(false) }
+    var iconSet by remember { mutableStateOf(uiState.account.icon) }
+    var colorSet by remember { mutableStateOf(uiState.account.iconColor) }
+
     Column(
         modifier = Modifier.padding(15.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -143,6 +165,60 @@ fun UpdateAccountView(
                 labelText = stringResource(id = R.string.target_label),
                 value = uiState.account.target,
                 onNewValue = onTargetChange
+            )
+        }
+        WalletIconBox(
+            icon = iconSet,
+            color = Color(colorSet),
+            onClick = {showAlertDialog.value = true}
+        )
+        if(showAlertDialog.value){
+            WalletAlertDialog(
+                onDismissRequest = { showAlertDialog.value = false },
+                icon = iconSet,
+                content = {
+                    HorizontalPager(2) { page ->
+                        if(page == 1){
+                            Box(
+                                modifier = Modifier.width(265.dp).height(300.dp)
+                            ){
+                                LazyVerticalGrid(columns = GridCells.Fixed(5)){
+                                    items(listOfAccountsIcons){ account ->
+                                        IconPage(
+                                            icon = account,
+                                            onIconAdd = {
+                                                uiState.account.icon = account
+                                                iconSet = account
+                                            })
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            Box(
+                                modifier = Modifier.width(265.dp).height(300.dp)
+                            ){
+                                LazyVerticalGrid(columns = GridCells.Fixed(5)){
+                                    items(listOfColors){ color ->
+                                        ColorPage(
+                                            iconColor = color,
+                                            onColorAdd = {
+                                                uiState.account.iconColor = color
+                                                colorSet = color
+                                            })
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                buttons = {
+                    Button(
+                        onClick = { showAlertDialog.value = false }
+                    ) {
+                        Text(text = "OK")
+                    }
+                }
             )
         }
         ButtonDelete(

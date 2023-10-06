@@ -38,7 +38,9 @@ val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
 // on below line we are adding different colors.
-val greenColor = Color(0xFF0F9D58)
+val greenColor = Color(0xFF2EBE78)
 val blueColor = Color(0xFF2196F3)
-val yellowColor = Color(0xFFFFC107)
-val redColor = Color(0xFFF44336)
+val yellowColor = Color(0xFFF0CF6D)
+val redColor = Color(0xFFF75D52)
+val grayColor = Color(0xFFB8B8B8)
+val blackColor = Color(0xFF2B2A2A)

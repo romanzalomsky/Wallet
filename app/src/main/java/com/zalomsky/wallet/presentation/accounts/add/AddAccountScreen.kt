@@ -1,14 +1,19 @@
 package com.zalomsky.wallet.presentation.accounts.add
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -20,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -36,11 +42,14 @@ import com.zalomsky.wallet.presentation.WalletAlertDialog
 import com.zalomsky.wallet.presentation.WalletIconBox
 import com.zalomsky.wallet.presentation.WalletIconButton
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
+import com.zalomsky.wallet.presentation.categories.add.ColorPage
 import com.zalomsky.wallet.presentation.categories.add.IconPage
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
+import com.zalomsky.wallet.presentation.common.color.purple
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 import com.zalomsky.wallet.presentation.listOfAccountsIcons
+import com.zalomsky.wallet.presentation.listOfColors
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -124,6 +133,7 @@ fun AddAccountAppBar(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddAccountView(
@@ -135,7 +145,8 @@ fun AddAccountView(
     onTargetChange: (Double) -> Unit
 ) {
     val showAlertDialog = remember { mutableStateOf(false) }
-    val defaultIcon = R.drawable.creditcard1
+    var iconSet by remember { mutableStateOf(R.drawable.creditcard1) }
+    var colorSet by remember { mutableStateOf(purple) }
 
     Scaffold(
         backgroundColor = backgroundColor,
@@ -169,18 +180,47 @@ fun AddAccountView(
                 )
             }
             WalletIconBox(
-                icon = defaultIcon,
-                color = Color.Blue,
+                icon = iconSet,
+                color = Color(colorSet),
                 onClick = {showAlertDialog.value = true}
             )
             if(showAlertDialog.value){
                 WalletAlertDialog(
                     onDismissRequest = { showAlertDialog.value = false },
-                    icon = defaultIcon,
+                    icon = iconSet,
                     content = {
-                        LazyVerticalGrid(columns = GridCells.Fixed(4)){
-                            items(listOfAccountsIcons){ account ->
-                                IconPage(icon = account, onIconAdd = { uiState.account.icon = account })
+                        HorizontalPager(2) { page ->
+                            if(page == 1){
+                                Box(
+                                    modifier = Modifier.width(265.dp).height(300.dp)
+                                ){
+                                    LazyVerticalGrid(columns = GridCells.Fixed(5)){
+                                        items(listOfColors){ color ->
+                                            ColorPage(
+                                                iconColor = color,
+                                                onColorAdd = {
+                                                    uiState.account.iconColor = color
+                                                    colorSet = color
+                                                })
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                Box(
+                                    modifier = Modifier.width(265.dp).height(300.dp)
+                                ){
+                                    LazyVerticalGrid(columns = GridCells.Fixed(5)){
+                                        items(listOfAccountsIcons){ account ->
+                                            IconPage(
+                                                icon = account,
+                                                onIconAdd = {
+                                                    uiState.account.icon = account
+                                                    iconSet = account
+                                                })
+                                        }
+                                    }
+                                }
                             }
                         }
                     },

@@ -44,7 +44,7 @@ fun WalletIconBox(
             .size(45.dp)
             .clip(RoundedCornerShape(15.dp))
             .background(color)
-            .clickable (onClick = onClick)
+            .clickable(onClick = onClick)
     ) {
         Icon(
             painter = painterResource(id = icon),
@@ -161,5 +161,4 @@ fun AlertNavButtons(
         }
     }
 }
-
 

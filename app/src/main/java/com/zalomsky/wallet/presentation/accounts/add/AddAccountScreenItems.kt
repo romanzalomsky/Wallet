@@ -10,10 +10,6 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -67,7 +63,6 @@ fun BalanceInputFields(
     value: Double,
     onNewValue: (Double) -> Unit
 ) {
-    var text by remember { mutableStateOf(value.toString()) }
     Column {
         Text(
             text = labelText,
@@ -78,12 +73,8 @@ fun BalanceInputFields(
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
-            value = text,
-            onValueChange = { newText ->
-                text = newText
-                val newValue = newText.toDoubleOrNull() ?: 0.0
-                onNewValue(newValue)
-            },
+            value = value.toString(),
+            onValueChange = { onNewValue(it.toDouble()) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)
@@ -109,7 +100,6 @@ fun TargetInputField(
     value: Double,
     onNewValue: (Double) -> Unit
 ) {
-    var text by remember { mutableStateOf(value.toString()) }
     Column {
         Text(
             text = labelText,
@@ -120,12 +110,8 @@ fun TargetInputField(
                 .padding(horizontal = 15.dp)
         )
         OutlinedTextField(
-            value = text,
-            onValueChange = { newText ->
-                text = newText
-                val newValue = newText.toDoubleOrNull() ?: 0.0
-                onNewValue(newValue)
-            },
+            value = value.toString(),
+            onValueChange = {onNewValue(it.toDouble())},
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)

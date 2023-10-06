@@ -41,4 +41,12 @@
     <string name="icon_item">Icon</string>
     <string name="icon_color_item">Icon Color</string>
 
+    <!-- Circle items -->
+    <string name="change_circle">Change</string>
+    <string name="balance_circle">Balance</string>
+    <string name="list_circle">List</string>
+    <string name="top_up_circle">Top up</string>
+    <string name="debit_circle">Debit</string>
+    <string name="transfer_circle">Transfer</string>
+
 </resources>

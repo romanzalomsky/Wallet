@@ -1,8 +1,6 @@
-package com.zalomsky.wallet.presentation.accounts.edit
+package com.zalomsky.wallet.presentation.accounts.update
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.model.Account
@@ -14,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,17 +24,20 @@ class EditAccountScreenViewModel @Inject constructor(
     private val updateAccountUseCase: UpdateAccountUseCase
 ) : ViewModel() {
 
-    private val _account = MutableLiveData<Account>()
-    val account: LiveData<Account>
-        get() = _account
-
     private val _uiState = MutableStateFlow(AccountUiState())
     val uiState: StateFlow<AccountUiState> = _uiState.asStateFlow()
 
     fun loadAccount(id: Long) {
         viewModelScope.launch {
-            getAccountByIdUseCase(id).let {
-                _account.postValue(it) // todo: post когда с другого потока, _account.value = newValue когда с main потока
+            getAccountByIdUseCase(id).collectLatest { result ->
+                result
+                    .onSuccess { account ->
+                        _uiState.update { currentState ->
+                            currentState.copy(account = account)
+                        }
+                    }.onFailure {
+                        // todo: show message
+                    }
             }
         }
     }
@@ -64,12 +66,15 @@ class EditAccountScreenViewModel @Inject constructor(
         }
     }
 
-    fun deleteAccounts(onSuccess: () -> Unit) {
+    fun deleteAccounts(account: Account, onSuccess: () -> Unit) {
         viewModelScope.launch {
-            account.value?.let {
-                deleteAccountUseCase.invoke(account = it)
-                onSuccess()
-            }
+            deleteAccountUseCase(account)
+                .onSuccess {
+                    onSuccess()
+                }
+                .onFailure {
+                    // TODO: show message
+                }
         }
     }
 
@@ -87,7 +92,6 @@ class EditAccountScreenViewModel @Inject constructor(
 
     fun onEvent(event: AccountEvent) {
         when(event){
-            is AccountEvent.Add -> {}
             is AccountEvent.Update -> updateAccount(event.onUpdated)
             is AccountEvent.Load -> loadAccount(event.accountId)
         }
@@ -95,7 +99,6 @@ class EditAccountScreenViewModel @Inject constructor(
 }
 
 sealed interface AccountEvent {
-    data class Add(val onAdded: () -> Unit) : AccountEvent
     data class Update(val onUpdated: () -> Unit) : AccountEvent
     data class Load(val accountId: Long) : AccountEvent
 }

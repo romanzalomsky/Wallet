@@ -12,11 +12,11 @@ class AddAccountUseCase @Inject constructor(
     private val accountValidator: AccountValidator
 ) {
     suspend operator fun invoke(accountEntity: AccountEntity): Result<Unit> =
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             accountValidator.invoke(accountEntity)
-                .onFailure{
-                return@withContext Result.failure(it)
-            }
+                .onFailure {
+                    return@withContext Result.failure(it)
+                }
             val result = runCatching {
                 accountRepository.insertAccount(accountEntity = accountEntity)
             }

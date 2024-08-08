@@ -17,8 +17,8 @@ data class Category(
     val circleColor: Int,
 
     val amount: Double
-){
-    companion object{
+) {
+    companion object {
         fun defaultInstance() = Category(
 
             name = "",

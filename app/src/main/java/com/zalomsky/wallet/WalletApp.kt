@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
-import com.zalomsky.wallet.presentation.common.components.WalletBottomBar
-import com.zalomsky.wallet.presentation.common.theme.WalletTheme
+import com.zalomsky.wallet.features.common.components.WalletBottomBar
+import com.zalomsky.wallet.features.common.theme.WalletTheme
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

@@ -11,7 +11,7 @@ import com.zalomsky.wallet.domain.model.Category
     entities = [AccountEntity::class, Category::class],
     version = 1
 )
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun accountDao(): AccountDao
 

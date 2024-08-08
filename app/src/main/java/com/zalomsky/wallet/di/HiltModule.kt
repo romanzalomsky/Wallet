@@ -17,20 +17,21 @@ import dagger.hilt.components.SingletonComponent
 class HiltModule {
 
     @Provides
-    fun provideAppDate(@ApplicationContext appContext: Context): AppDatabase{
-
-        return Room.databaseBuilder(appContext, AppDatabase::class.java, "app_database")
-            .build()
-
+    fun provideAppDate(@ApplicationContext appContext: Context): AppDatabase {
+        return Room.databaseBuilder(
+            appContext,
+            AppDatabase::class.java,
+            "app_database"
+        ).build()
     }
 
     @Provides
-    fun providesAccountDao(appDatabase: AppDatabase): AccountDao{
+    fun providesAccountDao(appDatabase: AppDatabase): AccountDao {
         return appDatabase.accountDao()
     }
 
     @Provides
-    fun providesCategoryDao(appDatabase: AppDatabase): CategoryDao{
+    fun providesCategoryDao(appDatabase: AppDatabase): CategoryDao {
         return appDatabase.categoryDao()
     }
 }

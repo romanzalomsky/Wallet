@@ -2,10 +2,10 @@ package com.zalomsky.wallet
 
 import androidx.annotation.StringRes
 import com.zalomsky.wallet.MainDestinations.HOME_ROUTE
-import com.zalomsky.wallet.presentation.common.icons.accountsIcon
-import com.zalomsky.wallet.presentation.common.icons.categoriesIcon
-import com.zalomsky.wallet.presentation.common.icons.overviewIcon
-import com.zalomsky.wallet.presentation.common.icons.transactionsIcon
+import com.zalomsky.wallet.features.common.icons.accountsIcon
+import com.zalomsky.wallet.features.common.icons.categoriesIcon
+import com.zalomsky.wallet.features.common.icons.overviewIcon
+import com.zalomsky.wallet.features.common.icons.transactionsIcon
 
 object MainDestinations {
 

@@ -2,7 +2,7 @@ package com.zalomsky.wallet.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.zalomsky.wallet.presentation.listOfColors
+import com.zalomsky.wallet.features.common.components.listOfColors
 
 @Entity(tableName = "account_table")
 data class AccountEntity(
@@ -15,10 +15,8 @@ data class AccountEntity(
     var type: String,
     var icon: Int,
     var iconColor: Int
-){
-
+) {
     companion object {
-
         fun defaultInstance() = AccountEntity(
             name = "",
             description = "",

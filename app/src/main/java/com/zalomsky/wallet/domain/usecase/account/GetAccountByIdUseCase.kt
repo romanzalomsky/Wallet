@@ -15,7 +15,7 @@ class GetAccountByIdUseCase @Inject constructor(
 
     operator fun invoke(id: Long): Flow<Result<AccountEntity>> =
         accountRepository.getAllAccounts().map { accounts ->
-            val account = accounts.first {it.id == id}
+            val account = accounts.first { it.id == id }
 
             val result = Result.success(account)
 

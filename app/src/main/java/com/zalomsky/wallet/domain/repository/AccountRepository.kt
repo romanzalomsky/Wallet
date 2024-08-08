@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class AccountRepository @Inject constructor(
     private val accountDao: AccountDao
-){
+) {
 
     fun getAllAccounts(): Flow<List<AccountEntity>> {
         return accountDao.getAllAccounts()

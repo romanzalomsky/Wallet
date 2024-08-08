@@ -16,6 +16,7 @@
     <string name="account_header">ACCOUNT</string>
     <string name="balance_header">BALANCE</string>
     <string name="on_value_change_header">ON VALUE CHANGE</string>
+    <string name="icon_header">Choose your icon</string>
 
     <!-- Labels -->
     <string name="name_label">Name</string>

@@ -10,7 +10,7 @@ class DeleteAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
     suspend operator fun invoke(accountEntity: AccountEntity): Result<Unit> =
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val result = runCatching { accountRepository.deleteAccount(accountEntity) }
             result
         }

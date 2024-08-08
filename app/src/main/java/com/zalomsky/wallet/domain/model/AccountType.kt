@@ -1,14 +1,11 @@
 package com.zalomsky.wallet.domain.model
 
 class AccountType {
-    companion object{
+    companion object {
         const val REGULAR: String = "REGULAR"
         const val SAVING: String = "SAVING"
         const val DEBT: String = "DEBT"
     }
 }
 
-
-
-/*enum class AccountType { REGULAR, SAVING, DEBT }*/
 

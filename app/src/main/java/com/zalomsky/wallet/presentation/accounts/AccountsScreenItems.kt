@@ -33,7 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zalomsky.wallet.R
-import com.zalomsky.wallet.domain.model.Account
+import com.zalomsky.wallet.domain.model.AccountEntity
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.blackColor
 import com.zalomsky.wallet.presentation.common.color.grayColor
@@ -45,7 +45,7 @@ import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 
 @Composable
 fun AccountBottomSheetContent(
-    account: Account,
+    accountEntity: AccountEntity,
     onAccountEdit: (Long, String) -> Unit
 ) {
     Column(
@@ -58,17 +58,17 @@ fun AccountBottomSheetContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
-                .background(Color(account.iconColor))
+                .background(Color(accountEntity.iconColor))
         ) {
-            Text(text = account.name)
+            Text(text = accountEntity.name)
         }
-        CircleContent(account = account, onAccountEdit = onAccountEdit)
+        CircleContent(accountEntity = accountEntity, onAccountEdit = onAccountEdit)
     }
 }
 
 @Composable
 fun CircleContent(
-    account: Account,
+    accountEntity: AccountEntity,
     onAccountEdit: (Long, String) -> Unit
 ) {
     Spacer(modifier = Modifier.height(30.dp))
@@ -79,7 +79,7 @@ fun CircleContent(
     ) {
         CircleElement(
             background = yellowColor,
-            onClick = { onAccountEdit(account.id, account.type) },
+            onClick = { onAccountEdit(accountEntity.id, accountEntity.type) },
             icon = Icons.Outlined.Create,
             text = stringResource(id = R.string.change_circle)
         )

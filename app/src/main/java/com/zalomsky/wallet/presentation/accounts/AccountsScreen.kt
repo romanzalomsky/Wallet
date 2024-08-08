@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
-import com.zalomsky.wallet.domain.model.Account
+import com.zalomsky.wallet.domain.model.AccountEntity
 import com.zalomsky.wallet.domain.model.AccountType
 import com.zalomsky.wallet.presentation.WalletIconButton
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
@@ -82,7 +82,7 @@ fun AccountsScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(accounts) { item ->
-                    AccountListItem(account = item, onAccountEdit = onAccountEdit)
+                    AccountListItem(accountEntity = item, onAccountEdit = onAccountEdit)
                 }
             }
         }
@@ -133,7 +133,7 @@ fun AccountAppBar(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AccountListItem(
-    account: Account,
+    accountEntity: AccountEntity,
     onAccountEdit: (Long, String) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -144,7 +144,7 @@ fun AccountListItem(
             onDismissRequest = { showBottomSheet = false },
             sheetState = sheetState,
             content = {
-                AccountBottomSheetContent(account = account, onAccountEdit = onAccountEdit)
+                AccountBottomSheetContent(accountEntity = accountEntity, onAccountEdit = onAccountEdit)
             }
         )
     }
@@ -156,46 +156,46 @@ fun AccountListItem(
             .height(70.dp)
             .clip(RoundedCornerShape(20.dp))
             .combinedClickable (
-                onClick = { onAccountEdit(account.id, account.type) },
+                onClick = { onAccountEdit(accountEntity.id, accountEntity.type) },
                 onLongClick = {showBottomSheet = true}
             )
     ) {
-        AccountListBody(account = account)
+        AccountListBody(accountEntity = accountEntity)
     }
 }
 
 @Composable
 fun AccountListBody(
-    account: Account
+    accountEntity: AccountEntity
 ) {
     Row {
-        IconBox(account = account)
+        IconBox(accountEntity = accountEntity)
         Column {
             Text(
-                text = account.name,
+                text = accountEntity.name,
                 fontFamily = splineSansMedium,
                 fontSize = 15.sp,
                 color = systemTextColor,
                 modifier = Modifier.padding(top = 10.dp)
             )
-            when (account.type) {
+            when (accountEntity.type) {
                 AccountType.REGULAR -> {
                     Text(
-                        text = account.balance.toString() + "$",
+                        text = accountEntity.balance.toString() + "$",
                         color = systemTextColor,
                         fontFamily = splineSansMedium,
                     )
                 }
                 AccountType.SAVING -> {
                     Text(
-                        text = account.balance.toString() + "$" + " out of " + "${account.target}" + "$",
+                        text = accountEntity.balance.toString() + "$" + " out of " + "${accountEntity.target}" + "$",
                         color = systemTextColor,
                         fontFamily = splineSansMedium,
                     )
                 }
                 AccountType.DEBT -> {
                     Text(
-                        text = account.balance.toString() + "$",
+                        text = accountEntity.balance.toString() + "$",
                         color = systemTextColor,
                         fontFamily = splineSansMedium,
                     )
@@ -207,7 +207,7 @@ fun AccountListBody(
             horizontalArrangement = Arrangement.End
         ) {
             Text(
-                text = account.description,
+                text = accountEntity.description,
                 fontFamily = splineSansLight,
                 fontStyle = FontStyle.Italic,
                 color = Color.Gray,
@@ -219,7 +219,7 @@ fun AccountListBody(
 
 @Composable
 fun IconBox(
-    account: Account,
+    accountEntity: AccountEntity,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -227,10 +227,10 @@ fun IconBox(
             .padding(10.dp)
             .size(45.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(Color(account.iconColor))
+            .background(Color(accountEntity.iconColor))
     ) {
         Icon(
-            painter = painterResource(id = account.icon),
+            painter = painterResource(id = accountEntity.icon),
             contentDescription = " ",
             tint = Color.White,
             modifier = Modifier.size(25.dp)

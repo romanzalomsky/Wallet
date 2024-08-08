@@ -31,12 +31,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.presentation.WalletIconButton
-import com.zalomsky.wallet.presentation.accounts.add.BalanceInputFields
-import com.zalomsky.wallet.presentation.accounts.add.StringInputField
 import com.zalomsky.wallet.presentation.categories.CategoryUiState
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.systemColor
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
+import com.zalomsky.wallet.presentation.common.components.WalletDoubleInputField
+import com.zalomsky.wallet.presentation.common.components.WalletStringInputField
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 import com.zalomsky.wallet.presentation.common.icons.familyCategoryIcon
 
@@ -131,13 +131,13 @@ fun AddCategoryView(
             .background(backgroundColor)
             .fillMaxSize(),
     ) {
-        StringInputField(
+        WalletStringInputField(
             labelText = stringResource(id = R.string.name_label),
             value = uiState.category.name,
             onNewValue = onNameChange
         )
-        BalanceInputFields(
-            labelText = stringResource(id = R.string.amount_label),
+        WalletDoubleInputField(
+/*            labelText = stringResource(id = R.string.amount_label),*/
             value = uiState.category.amount,
             onNewValue = onBalanceChange
         )

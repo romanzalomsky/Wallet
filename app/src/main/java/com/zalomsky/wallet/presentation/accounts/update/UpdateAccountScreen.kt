@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,10 +22,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,17 +42,14 @@ import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.AccountType
 import com.zalomsky.wallet.presentation.WalletAlertDialog
 import com.zalomsky.wallet.presentation.WalletIconBox
-import com.zalomsky.wallet.presentation.WalletIconButton
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
-import com.zalomsky.wallet.presentation.accounts.add.BalanceInputFields
-import com.zalomsky.wallet.presentation.accounts.add.StringInputField
-import com.zalomsky.wallet.presentation.accounts.add.TargetInputField
 import com.zalomsky.wallet.presentation.categories.add.ColorPage
 import com.zalomsky.wallet.presentation.categories.add.IconPage
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
-import com.zalomsky.wallet.presentation.common.color.systemTextColor
+import com.zalomsky.wallet.presentation.common.components.WalletAppBar
+import com.zalomsky.wallet.presentation.common.components.WalletDoubleInputField
+import com.zalomsky.wallet.presentation.common.components.WalletStringInputField
 import com.zalomsky.wallet.presentation.common.fonts.aksharMedium
-import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
 import com.zalomsky.wallet.presentation.listOfAccountsIcons
 import com.zalomsky.wallet.presentation.listOfColors
 
@@ -69,7 +62,7 @@ fun EditAccountScreen(
 ) {
     val viewModel: EditAccountScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val account = viewModel.uiState.value.account // TODO:
+    val account = viewModel.uiState.value.accountEntity
 
     LaunchedEffect(id) {
         viewModel.onEvent(AccountEvent.Load(id))
@@ -77,14 +70,14 @@ fun EditAccountScreen(
 
     Scaffold(
         topBar = {
-            UpdateAccountAppBar(
-                onUpdateAccount = { viewModel.onEvent(AccountEvent.Update(onBackPressed)) },
+            WalletAppBar(
+                text = stringResource(id = R.string.edit_account_header),
+                onClick = { viewModel.onEvent(AccountEvent.Update(onBackPressed)) },
                 upPress = onBackPressed
             )
         },
         backgroundColor = backgroundColor,
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         UpdateAccountView(
             state = state,
@@ -94,34 +87,6 @@ fun EditAccountScreen(
             onBalanceChange = viewModel::onBalanceChange,
             onTargetChange = viewModel::onTargetChange,
             onDeleteAccount = { viewModel.deleteAccounts(account, onBackPressed) }
-        )
-    }
-}
-
-@Composable
-fun UpdateAccountAppBar(
-    onUpdateAccount: () -> Unit,
-    upPress: () -> Unit
-) {
-    TopAppBar(
-        backgroundColor = Color.White
-    ) {
-        WalletIconButton(
-            icon = Icons.Outlined.ArrowBack,
-            description = "arrow back icon",
-            onClick = upPress
-        )
-        Text(
-            text = "Edit Account",
-            fontFamily = splineSansMedium,
-            fontSize = 20.sp,
-            color = systemTextColor
-        )
-        Spacer(Modifier.weight(1f, true))
-        WalletIconButton(
-            icon = Icons.Outlined.Check,
-            description = "check icon",
-            onClick = onUpdateAccount
         )
     }
 }
@@ -138,32 +103,30 @@ fun UpdateAccountView(
     onDeleteAccount: () -> Unit
 ) {
     val showAlertDialog = remember { mutableStateOf(false) }
-    var iconSet by remember { mutableStateOf(uiState.account.icon) }
-    var colorSet by remember { mutableStateOf(uiState.account.iconColor) }
+    var iconSet by remember { mutableStateOf(uiState.accountEntity.icon) }
+    var colorSet by remember { mutableStateOf(uiState.accountEntity.iconColor) }
 
     Column(
         modifier = Modifier.padding(15.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        StringInputField(
+        WalletStringInputField(
             labelText = stringResource(id = R.string.name_label),
-            value = uiState.account.name,
+            value = uiState.accountEntity.name,
             onNewValue = onNameChange
         )
-        StringInputField(
+        WalletStringInputField(
             labelText = stringResource(id = R.string.description_label),
-            value = uiState.account.description,
+            value = uiState.accountEntity.description,
             onNewValue = onDescriptionChange
         )
-        BalanceInputFields(
-            labelText = stringResource(id = R.string.balance_label),
-            value = uiState.account.balance,
+        WalletDoubleInputField(
+            value = uiState.accountEntity.balance,
             onNewValue = onBalanceChange
         )
         if (state == AccountType.SAVING) {
-            TargetInputField(
-                labelText = stringResource(id = R.string.target_label),
-                value = uiState.account.target,
+            WalletDoubleInputField(
+                value = uiState.accountEntity.target,
                 onNewValue = onTargetChange
             )
         }
@@ -187,7 +150,7 @@ fun UpdateAccountView(
                                         IconPage(
                                             icon = account,
                                             onIconAdd = {
-                                                uiState.account.icon = account
+                                                uiState.accountEntity.icon = account
                                                 iconSet = account
                                             })
                                     }
@@ -203,7 +166,7 @@ fun UpdateAccountView(
                                         ColorPage(
                                             iconColor = color,
                                             onColorAdd = {
-                                                uiState.account.iconColor = color
+                                                uiState.accountEntity.iconColor = color
                                                 colorSet = color
                                             })
                                     }

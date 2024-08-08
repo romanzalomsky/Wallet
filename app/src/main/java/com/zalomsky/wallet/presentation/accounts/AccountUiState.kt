@@ -1,9 +1,9 @@
 package com.zalomsky.wallet.presentation.accounts
 
-import com.zalomsky.wallet.domain.model.Account
+import com.zalomsky.wallet.domain.model.AccountEntity
 
 data class AccountUiState(
-    val account: Account = Account.defaultInstance()
+    val accountEntity: AccountEntity = AccountEntity.defaultInstance()
 )
 
 data class AccountDetails(
@@ -18,7 +18,7 @@ data class AccountDetails(
     val iconColor: Int = 0
 )
 
-fun AccountDetails.toAccount(): Account = Account(
+fun AccountDetails.toAccount(): AccountEntity = AccountEntity(
 
     id = id,
     name = name,
@@ -30,7 +30,7 @@ fun AccountDetails.toAccount(): Account = Account(
     iconColor = iconColor
 )
 
-fun Account.toAccountDetails(): AccountDetails = AccountDetails(
+fun AccountEntity.toAccountDetails(): AccountDetails = AccountDetails(
 
     id = id,
     name = name,

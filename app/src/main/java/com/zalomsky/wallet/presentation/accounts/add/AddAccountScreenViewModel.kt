@@ -22,31 +22,31 @@ class AddAccountScreenViewModel @Inject constructor(
 
     fun onNameChange(newValue: String) {
         _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(name = newValue))
+            currentState.copy(accountEntity = currentState.accountEntity.copy(name = newValue))
         }
     }
 
     fun onDescriptionChange(newValue: String) {
         _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(description = newValue))
+            currentState.copy(accountEntity = currentState.accountEntity.copy(description = newValue))
         }
     }
 
     fun onBalanceChange(newValue: Double) {
         _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(balance = newValue))
+            currentState.copy(accountEntity = currentState.accountEntity.copy(balance = newValue))
         }
     }
 
     fun onTargetChange(newValue: Double) {
         _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(target = newValue))
+            currentState.copy(accountEntity = currentState.accountEntity.copy(target = newValue))
         }
     }
 
     fun addAccount(onSuccess: () -> Unit) {
         viewModelScope.launch {
-            addAccountUseCase(uiState.value.account)
+            addAccountUseCase(uiState.value.accountEntity)
                 .onSuccess {
                     onSuccess()
                 }

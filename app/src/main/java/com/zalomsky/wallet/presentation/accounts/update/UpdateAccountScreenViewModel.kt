@@ -3,7 +3,7 @@ package com.zalomsky.wallet.presentation.accounts.update
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zalomsky.wallet.domain.model.Account
+import com.zalomsky.wallet.domain.model.AccountEntity
 import com.zalomsky.wallet.domain.usecase.account.DeleteAccountUseCase
 import com.zalomsky.wallet.domain.usecase.account.GetAccountByIdUseCase
 import com.zalomsky.wallet.domain.usecase.account.UpdateAccountUseCase
@@ -33,7 +33,7 @@ class EditAccountScreenViewModel @Inject constructor(
                 result
                     .onSuccess { account ->
                         _uiState.update { currentState ->
-                            currentState.copy(account = account)
+                            currentState.copy(accountEntity = account)
                         }
                     }.onFailure {
                         // todo: show message
@@ -44,31 +44,31 @@ class EditAccountScreenViewModel @Inject constructor(
 
     fun onNameChange(newValue: String) {
         _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(name = newValue))
+            currentState.copy(accountEntity = currentState.accountEntity.copy(name = newValue))
         }
     }
 
     fun onDescriptionChange(newValue: String) {
         _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(description = newValue))
+            currentState.copy(accountEntity = currentState.accountEntity.copy(description = newValue))
         }
     }
 
     fun onBalanceChange(newValue: Double) {
         _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(balance = newValue))
+            currentState.copy(accountEntity = currentState.accountEntity.copy(balance = newValue))
         }
     }
 
     fun onTargetChange(newValue: Double) {
         _uiState.update { currentState ->
-            currentState.copy(account = currentState.account.copy(target = newValue))
+            currentState.copy(accountEntity = currentState.accountEntity.copy(target = newValue))
         }
     }
 
-    fun deleteAccounts(account: Account, onSuccess: () -> Unit) {
+    fun deleteAccounts(accountEntity: AccountEntity, onSuccess: () -> Unit) {
         viewModelScope.launch {
-            deleteAccountUseCase(account)
+            deleteAccountUseCase(accountEntity)
                 .onSuccess {
                     onSuccess()
                 }
@@ -80,7 +80,7 @@ class EditAccountScreenViewModel @Inject constructor(
 
     fun updateAccount(onAccountUpdated: () -> Unit) {
         viewModelScope.launch {
-            updateAccountUseCase(uiState.value.account)
+            updateAccountUseCase(uiState.value.accountEntity)
                 .onSuccess {
                     onAccountUpdated()
                 }

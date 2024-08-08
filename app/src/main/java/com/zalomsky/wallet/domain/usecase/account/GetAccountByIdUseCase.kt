@@ -1,6 +1,6 @@
 package com.zalomsky.wallet.domain.usecase.account
 
-import com.zalomsky.wallet.domain.model.Account
+import com.zalomsky.wallet.domain.model.AccountEntity
 import com.zalomsky.wallet.domain.repository.AccountRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +13,7 @@ class GetAccountByIdUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
 
-    operator fun invoke(id: Long): Flow<Result<Account>> =
+    operator fun invoke(id: Long): Flow<Result<AccountEntity>> =
         accountRepository.getAllAccounts().map { accounts ->
             val account = accounts.first {it.id == id}
 

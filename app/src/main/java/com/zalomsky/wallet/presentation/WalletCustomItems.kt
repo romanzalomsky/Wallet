@@ -139,26 +139,3 @@ fun AlertDialogHeader(
         )
     }
 }
-
-@Composable
-fun AlertNavButtons(
-
-) {
-    Row (
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.width(145.dp)
-        ) {
-            Text(text = "Icon")
-        }
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.width(145.dp)
-        ) {
-            Text(text = "Color")
-        }
-    }
-}
-

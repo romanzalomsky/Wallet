@@ -1,6 +1,6 @@
 package com.zalomsky.wallet.domain.usecase.account
 
-import com.zalomsky.wallet.domain.model.Account
+import com.zalomsky.wallet.domain.model.AccountEntity
 import com.zalomsky.wallet.domain.repository.AccountRepository
 import com.zalomsky.wallet.domain.validator.AccountValidator
 import kotlinx.coroutines.Dispatchers
@@ -11,14 +11,14 @@ class UpdateAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
     private val accountValidator: AccountValidator
 ) {
-    suspend operator fun invoke(account: Account): Result<Unit> =
+    suspend operator fun invoke(accountEntity: AccountEntity): Result<Unit> =
         withContext(Dispatchers.IO){
-            accountValidator.invoke(account).onFailure {
+            accountValidator.invoke(accountEntity).onFailure {
                 return@withContext Result.failure(it)
             }
 
             val result = runCatching {
-                accountRepository.updateAccount(account = account)
+                accountRepository.updateAccount(accountEntity = accountEntity)
             }
 
             result

@@ -1,13 +1,13 @@
 package com.zalomsky.wallet.domain.validator
 
-import com.zalomsky.wallet.domain.model.Account
+import com.zalomsky.wallet.domain.model.AccountEntity
 import javax.inject.Inject
 
 class AccountValidator @Inject constructor(){
 
-    operator fun invoke(account: Account): Result<Unit> =
+    operator fun invoke(accountEntity: AccountEntity): Result<Unit> =
         when {
-            account.name.isBlank() -> Result.failure(Exception("Name should't be blank!!!"))
+            accountEntity.name.isBlank() -> Result.failure(Exception("Name should't be blank!!!"))
             else -> Result.success(Unit)
         }
 }

@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
-import com.zalomsky.wallet.domain.model.AccountType.*
 import com.zalomsky.wallet.domain.model.AccountType.Companion.DEBT
 import com.zalomsky.wallet.domain.model.AccountType.Companion.REGULAR
 import com.zalomsky.wallet.domain.model.AccountType.Companion.SAVING
@@ -42,14 +42,13 @@ import com.zalomsky.wallet.presentation.WalletAlertDialog
 import com.zalomsky.wallet.presentation.WalletIconBox
 import com.zalomsky.wallet.presentation.WalletIconButton
 import com.zalomsky.wallet.presentation.accounts.AccountUiState
-import com.zalomsky.wallet.presentation.categories.add.ColorPage
-import com.zalomsky.wallet.presentation.categories.add.IconPage
 import com.zalomsky.wallet.presentation.common.color.backgroundColor
 import com.zalomsky.wallet.presentation.common.color.purple
 import com.zalomsky.wallet.presentation.common.color.systemTextColor
+import com.zalomsky.wallet.presentation.common.components.WalletAppBar
+import com.zalomsky.wallet.presentation.common.components.WalletDoubleInputField
+import com.zalomsky.wallet.presentation.common.components.WalletStringInputField
 import com.zalomsky.wallet.presentation.common.fonts.splineSansMedium
-import com.zalomsky.wallet.presentation.listOfAccountsIcons
-import com.zalomsky.wallet.presentation.listOfColors
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -62,10 +61,10 @@ fun AddAccountScreen(
 
     Scaffold(
         topBar = {
-            AddAccountAppBar(
-                text = "Add Account",
+            WalletAppBar(
+                text = stringResource(id = R.string.add_account_header),
                 upPress = onBackPressed,
-                addAccount = { viewModel.addAccount(onBackPressed) }
+                onClick = { viewModel.addAccount(onBackPressed) }
             )
         }
     ) {
@@ -104,36 +103,6 @@ fun AddAccountScreen(
     }
 }
 
-@Composable
-fun AddAccountAppBar(
-    text: String,
-    upPress: () -> Unit,
-    addAccount: () -> Unit
-) {
-    TopAppBar(
-        backgroundColor = Color.White
-    ) {
-        WalletIconButton(
-            icon = Icons.Outlined.ArrowBack,
-            description = "arrow back icon",
-            onClick = upPress
-        )
-        Text(
-            text = text,
-            fontFamily = splineSansMedium,
-            fontSize = 20.sp,
-            color = systemTextColor
-        )
-        Spacer(Modifier.weight(1f, true))
-        WalletIconButton(
-            icon = Icons.Outlined.Check,
-            description = "check icon",
-            onClick = addAccount
-        )
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddAccountView(
@@ -154,28 +123,25 @@ fun AddAccountView(
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier
-                .padding(15.dp)
+            modifier = Modifier.padding(15.dp)
         ) {
-            StringInputField(
+            WalletStringInputField(
                 labelText = stringResource(id = R.string.name_label),
-                value = uiState.account.name,
+                value = uiState.accountEntity.name,
                 onNewValue = onNameChange
             )
-            StringInputField(
+            WalletStringInputField(
                 labelText = stringResource(id = R.string.description_label),
-                value = uiState.account.description,
+                value = uiState.accountEntity.description,
                 onNewValue = onDescriptionChange
             )
-            BalanceInputFields(
-                labelText = stringResource(id = R.string.balance_label),
-                value = uiState.account.balance,
+            WalletDoubleInputField(
+                value = uiState.accountEntity.balance,
                 onNewValue = onBalanceChange
             )
             if (state == SAVING) {
-                TargetInputField(
-                    labelText = stringResource(id = R.string.target_label),
-                    value = uiState.account.target,
+                WalletDoubleInputField(
+                    value = uiState.accountEntity.target,
                     onNewValue = onTargetChange
                 )
             }
@@ -185,55 +151,74 @@ fun AddAccountView(
                 onClick = {showAlertDialog.value = true}
             )
             if(showAlertDialog.value){
-                WalletAlertDialog(
-                    onDismissRequest = { showAlertDialog.value = false },
-                    icon = iconSet,
-                    content = {
-                        HorizontalPager(2) { page ->
-                            if(page == 1){
-                                Box(
-                                    modifier = Modifier.width(265.dp).height(300.dp)
-                                ){
-                                    LazyVerticalGrid(columns = GridCells.Fixed(5)){
-                                        items(listOfColors){ color ->
-                                            ColorPage(
-                                                iconColor = color,
-                                                onColorAdd = {
-                                                    uiState.account.iconColor = color
-                                                    colorSet = color
-                                                })
-                                        }
-                                    }
-                                }
-                            }
-                            else{
-                                Box(
-                                    modifier = Modifier.width(265.dp).height(300.dp)
-                                ){
-                                    LazyVerticalGrid(columns = GridCells.Fixed(5)){
-                                        items(listOfAccountsIcons){ account ->
-                                            IconPage(
-                                                icon = account,
-                                                onIconAdd = {
-                                                    uiState.account.icon = account
-                                                    iconSet = account
-                                                })
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    buttons = {
-                        Button(
-                            onClick = { showAlertDialog.value = false }
-                        ) {
-                            Text(text = "OK")
-                        }
-                    }
+                AlertDialog(
+                    iconSet = iconSet,
+                    showAlertDialog = showAlertDialog,
                 )
             }
-            uiState.account.type = state.toString()
+            uiState.accountEntity.type = state.toString()
+        }
+    }
+}
+
+@Composable
+fun AlertDialog(
+    iconSet: Int,
+    showAlertDialog: MutableState<Boolean>
+) {
+    WalletAlertDialog(
+        onDismissRequest = { showAlertDialog.value = false },
+        icon = iconSet,
+        content = {
+            WalletHorizontalPager()
+        },
+        buttons = {
+            Button(
+                onClick = { showAlertDialog.value = false }
+            ) {
+                Text(text = "OK")
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun WalletHorizontalPager() {
+    HorizontalPager(2) { page ->
+        when(page) {
+            1 -> {
+                Box(
+                    modifier = Modifier.width(265.dp).height(300.dp)
+                ){
+                    LazyVerticalGrid(columns = GridCells.Fixed(5)){
+                        /*items(listOfColors){ color ->
+                            ColorPage(
+                                iconColor = color,
+                                onColorAdd = {
+                                    uiState.accountEntity.iconColor = color
+                                    colorSet = color
+                                })
+                        }*/
+                    }
+                }
+            }
+            2 -> {
+                Box(
+                    modifier = Modifier.width(265.dp).height(300.dp)
+                ){
+                    LazyVerticalGrid(columns = GridCells.Fixed(5)){
+                       /* items(listOfAccountsIcons){ account ->
+                            IconPage(
+                                icon = account,
+                                onIconAdd = {
+                                    uiState.accountEntity.icon = account
+                                    iconSet = account
+                                })
+                        }*/
+                    }
+                }
+            }
         }
     }
 }

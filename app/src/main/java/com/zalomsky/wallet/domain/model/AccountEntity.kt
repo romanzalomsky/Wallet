@@ -1,31 +1,25 @@
 package com.zalomsky.wallet.domain.model
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.zalomsky.wallet.presentation.listOfColors
 
-@Entity
-data class Account( // todo: сделать отдельную модель для бд (AccountEntity)
+@Entity(tableName = "account_table")
+data class AccountEntity(
 
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
     val balance: Double,
     val description: String,
-
-    @ColumnInfo(name = "target", defaultValue = "1")
     val target: Double,
-
-    @ColumnInfo(name = "type", defaultValue = "1")
     var type: String,
-
     var icon: Int,
     var iconColor: Int
 ){
+
     companion object {
 
-        fun defaultInstance() = Account (
+        fun defaultInstance() = AccountEntity(
             name = "",
             description = "",
             balance = 0.0,
@@ -35,6 +29,5 @@ data class Account( // todo: сделать отдельную модель дл
             iconColor = listOfColors.random()
         )
     }
-
 }
 

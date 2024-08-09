@@ -1,4 +1,4 @@
-package com.zalomsky.wallet.features.accounts
+package com.zalomsky.wallet.features.accounts.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

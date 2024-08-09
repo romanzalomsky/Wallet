@@ -3,7 +3,7 @@ package com.zalomsky.wallet.features.accounts.add
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zalomsky.wallet.domain.usecase.account.AddAccountUseCase
-import com.zalomsky.wallet.features.accounts.AccountUiState
+import com.zalomsky.wallet.features.accounts.screen.AccountUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +28,11 @@ class AddAccountViewModel @Inject constructor(
 
     fun onDescriptionChange(newValue: String) {
         _uiState.update { currentState ->
-            currentState.copy(accountEntity = currentState.accountEntity.copy(description = newValue))
+            currentState.copy(
+                accountEntity = currentState.accountEntity.copy(
+                    description = newValue
+                )
+            )
         }
     }
 

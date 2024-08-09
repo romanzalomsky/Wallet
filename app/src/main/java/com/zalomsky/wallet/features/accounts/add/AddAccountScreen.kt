@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,10 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
-import com.zalomsky.wallet.domain.model.AccountType.Companion.DEBT
-import com.zalomsky.wallet.domain.model.AccountType.Companion.REGULAR
-import com.zalomsky.wallet.domain.model.AccountType.Companion.SAVING
-import com.zalomsky.wallet.features.accounts.AccountUiState
+import com.zalomsky.wallet.domain.model.AccountType
+import com.zalomsky.wallet.features.accounts.screen.AccountUiState
 import com.zalomsky.wallet.features.common.color.backgroundColor
 import com.zalomsky.wallet.features.common.components.WalletAppBar
 import com.zalomsky.wallet.features.common.components.WalletDoubleInputField
@@ -38,12 +38,13 @@ fun AddAccountScreen(
             WalletAppBar(
                 text = stringResource(id = R.string.add_account_header),
                 upPress = onBackPressed,
-                onClick = { viewModel.addAccount(onBackPressed) }
+                onClick = { viewModel.addAccount(onBackPressed) },
+                navIcon = Icons.Outlined.ArrowBack
             )
         }
     ) {
         when (state) {
-            REGULAR -> {
+            AccountType.REGULAR.name -> {
                 AddAccountView(
                     state = state,
                     uiState = uiState,
@@ -53,7 +54,7 @@ fun AddAccountScreen(
                     onTargetChange = viewModel::onTargetChange
                 )
             }
-            SAVING -> {
+            AccountType.SAVING.name -> {
                 AddAccountView(
                     state = state,
                     uiState = uiState,
@@ -63,7 +64,7 @@ fun AddAccountScreen(
                     onTargetChange = viewModel::onTargetChange
                 )
             }
-            DEBT -> {
+            AccountType.DEBT.name -> {
                 AddAccountView(
                     state = state,
                     uiState = uiState,
@@ -109,11 +110,13 @@ fun AddAccountView(
                 value = uiState.accountEntity.balance,
                 onNewValue = onBalanceChange
             )
-            if (state == SAVING) {
-                WalletDoubleInputField(
-                    value = uiState.accountEntity.target,
-                    onNewValue = onTargetChange
-                )
+            when (state) {
+                AccountType.SAVING.name -> {
+                    WalletDoubleInputField(
+                        value = uiState.accountEntity.target,
+                        onNewValue = onTargetChange
+                    )
+                }
             }
             uiState.accountEntity.type = state.toString()
         }

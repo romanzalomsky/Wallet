@@ -146,7 +146,7 @@ fun AddCategoryView(
             IconAlertDialog(
                 showDialog = showDialog.value,
                 onDismiss = { showDialog.value = false },
-                onIconAdd = { uiState.category.icon = icon } // TODO: Обработать нажатие
+                onIconAdd = { uiState.category.icon = icon }
             )
         }
     }

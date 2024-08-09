@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -16,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.AccountType
-import com.zalomsky.wallet.features.accounts.AccountUiState
+import com.zalomsky.wallet.features.accounts.screen.AccountUiState
 import com.zalomsky.wallet.features.common.color.backgroundColor
 import com.zalomsky.wallet.features.common.components.ButtonDelete
 import com.zalomsky.wallet.features.common.components.WalletAppBar
@@ -44,7 +46,8 @@ fun EditAccountScreen(
             WalletAppBar(
                 text = stringResource(id = R.string.edit_account_header),
                 onClick = { viewModel.onEvent(AccountEvent.Update(onBackPressed)) },
-                upPress = onBackPressed
+                upPress = onBackPressed,
+                navIcon = Icons.Outlined.ArrowBack
             )
         },
         backgroundColor = backgroundColor,
@@ -90,11 +93,13 @@ fun UpdateAccountView(
             value = uiState.accountEntity.balance,
             onNewValue = onBalanceChange
         )
-        if (state == AccountType.SAVING) {
-            WalletDoubleInputField(
-                value = uiState.accountEntity.target,
-                onNewValue = onTargetChange
-            )
+        when (state) {
+            AccountType.SAVING.name -> {
+                WalletDoubleInputField(
+                    value = uiState.accountEntity.target,
+                    onNewValue = onTargetChange
+                )
+            }
         }
         ButtonDelete(onDeleteAccount = onDeleteAccount)
     }

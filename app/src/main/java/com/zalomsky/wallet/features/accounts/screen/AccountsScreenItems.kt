@@ -1,4 +1,4 @@
-package com.zalomsky.wallet.features.accounts
+package com.zalomsky.wallet.features.accounts.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -86,14 +86,14 @@ fun CircleContent(
         Spacer(modifier = Modifier.width(85.dp))
         CircleElement(
             background = grayColor,
-            onClick = { /*TODO*/ },
+            onClick = {  },
             icon = Icons.Outlined.Refresh,
             text = stringResource(id = R.string.balance_circle)
         )
         Spacer(modifier = Modifier.width(85.dp))
         CircleElement(
             background = greenColor,
-            onClick = { /*TODO*/ },
+            onClick = {},
             icon = Icons.Outlined.List,
             text = stringResource(id = R.string.list_circle)
         )
@@ -106,21 +106,21 @@ fun CircleContent(
     ) {
         CircleElement(
             background = greenColor,
-            onClick = { /*TODO*/ },
+            onClick = { },
             icon = Icons.Outlined.KeyboardArrowUp,
             text = stringResource(id = R.string.top_up_circle)
         )
         Spacer(modifier = Modifier.width(85.dp))
         CircleElement(
             background = redColor,
-            onClick = { /*TODO*/ },
+            onClick = {  },
             icon = Icons.Outlined.KeyboardArrowDown,
             text = stringResource(id = R.string.debit_circle)
         )
         Spacer(modifier = Modifier.width(85.dp))
         CircleElement(
             background = grayColor,
-            onClick = { /*TODO*/ },
+            onClick = { },
             icon = Icons.Outlined.ArrowForward,
             text = stringResource(id = R.string.transfer_circle)
         )

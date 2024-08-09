@@ -1,5 +1,6 @@
 package com.zalomsky.wallet.features.common.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -10,17 +11,23 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zalomsky.wallet.HomeSections
+import com.zalomsky.wallet.R
 import com.zalomsky.wallet.features.common.color.systemTextColor
 import com.zalomsky.wallet.features.common.fonts.rubikMedium
 import com.zalomsky.wallet.features.common.fonts.splineSansMedium
@@ -29,20 +36,21 @@ import com.zalomsky.wallet.features.common.fonts.splineSansMedium
 fun WalletAppBar(
     text: String,
     upPress: () -> Unit,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    navIcon: ImageVector
 ) {
     TopAppBar(
         backgroundColor = Color.White
     ) {
         WalletIconButton(
-            icon = Icons.Outlined.ArrowBack,
+            icon = navIcon,
             description = "arrow back icon",
             onClick = upPress
         )
         Text(
             text = text,
             fontFamily = splineSansMedium,
-            fontSize = 20.sp,
+            fontSize = topAppBarFontSize,
             color = systemTextColor
         )
         Spacer(Modifier.weight(1f, true))
@@ -101,6 +109,47 @@ fun WalletBottomBar(
                 selectedContentColor = Color(0xFF0B9AFA),
                 unselectedContentColor = Color.Gray,
                 onClick = { navigateToRoute(section.route) }
+            )
+        }
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun AccountAppBar(
+    onRegularAccountAdd: () -> Unit,
+    onSavingAccountAdd: () -> Unit,
+    onDebtAccountAdd: () -> Unit,
+) {
+    val showDialog = remember { mutableStateOf(false) }
+
+    TopAppBar(
+        backgroundColor = Color.White
+    ) {
+        WalletIconButton(
+            icon = Icons.Outlined.Menu,
+            description = "Menu icon",
+            onClick = {}
+        )
+        Text(
+            text = stringResource(id = R.string.accounts),
+            fontFamily = splineSansMedium,
+            fontSize = topAppBarFontSize,
+            color = systemTextColor,
+        )
+        Spacer(Modifier.weight(1f, true))
+        WalletIconButton(
+            icon = Icons.Filled.Add,
+            description = "Add",
+            onClick = { showDialog.value = true }
+        )
+        if (showDialog.value) {
+            TypeAlertDialog(
+                showDialog = showDialog.value,
+                onDismiss = { showDialog.value = false },
+                onRegularAccountAdd = onRegularAccountAdd,
+                onSavingAccountAdd = onSavingAccountAdd,
+                onDebtAccountAdd = onDebtAccountAdd
             )
         }
     }

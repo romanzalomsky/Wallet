@@ -1,6 +1,5 @@
-package com.zalomsky.wallet.features.accounts
+package com.zalomsky.wallet.features.common.components
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,27 +10,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,115 +34,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zalomsky.wallet.R
 import com.zalomsky.wallet.domain.model.AccountEntity
 import com.zalomsky.wallet.domain.model.AccountType
-import com.zalomsky.wallet.features.common.color.backgroundColor
 import com.zalomsky.wallet.features.common.color.systemTextColor
-import com.zalomsky.wallet.features.common.components.WalletIconButton
-import com.zalomsky.wallet.features.common.components.fontSize
-import com.zalomsky.wallet.features.common.components.topAppBarFontSize
 import com.zalomsky.wallet.features.common.fonts.splineSansLight
 import com.zalomsky.wallet.features.common.fonts.splineSansMedium
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AccountsScreen(
-    onRegularAccountAdd: () -> Unit,
-    onSavingAccountAdd: () -> Unit,
-    onDebtAccountAdd: () -> Unit,
-    onAccountEdit: (Long, String) -> Unit
-) {
-    val viewModel: AccountsScreenViewModel = hiltViewModel()
-    val accounts by viewModel.accounts.collectAsStateWithLifecycle()
-
-    Scaffold(
-        topBar = {
-            AccountAppBar(onRegularAccountAdd, onSavingAccountAdd, onDebtAccountAdd)
-        },
-        backgroundColor = backgroundColor,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column {
-            Spacer(modifier = Modifier.height(10.dp))
-            LazyColumn(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(accounts) { item ->
-                    AccountListItem(accountEntity = item, onAccountEdit = onAccountEdit)
-                }
-            }
-        }
-    }
-}
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun AccountAppBar(
-    onRegularAccountAdd: () -> Unit,
-    onSavingAccountAdd: () -> Unit,
-    onDebtAccountAdd: () -> Unit,
-) {
-    val showDialog = remember { mutableStateOf(false) }
-
-    TopAppBar(
-        backgroundColor = Color.White
-    ) {
-        WalletIconButton(
-            icon = Icons.Outlined.Menu,
-            description = "Menu icon",
-            onClick = {}
-        )
-        Text(
-            text = stringResource(id = R.string.accounts),
-            fontFamily = splineSansMedium,
-            fontSize = topAppBarFontSize,
-            color = systemTextColor,
-        )
-        Spacer(Modifier.weight(1f, true))
-        WalletIconButton(
-            icon = Icons.Filled.Add,
-            description = "Add",
-            onClick = { showDialog.value = true }
-        )
-        if (showDialog.value) {
-            TypeAlertDialog(
-                showDialog = showDialog.value,
-                onDismiss = { showDialog.value = false },
-                onRegularAccountAdd = onRegularAccountAdd,
-                onSavingAccountAdd = onSavingAccountAdd,
-                onDebtAccountAdd = onDebtAccountAdd
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun AccountListItem(
+fun AccountElement(
     accountEntity: AccountEntity,
     onAccountEdit: (Long, String) -> Unit
 ) {
-    val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
-
-    if(showBottomSheet){
-        ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false },
-            sheetState = sheetState,
-            content = {
-                AccountBottomSheetContent(accountEntity = accountEntity, onAccountEdit = onAccountEdit)
-            }
-        )
-    }
     Card(
-        elevation = 0.dp,
         modifier = Modifier
-            .padding(3.dp)
-            .width(355.dp)
+            .fillMaxWidth()
+            .padding(paddingBetweenElements)
             .height(70.dp)
             .clip(RoundedCornerShape(20.dp))
             .combinedClickable(
@@ -162,59 +59,54 @@ fun AccountListItem(
                 onLongClick = { showBottomSheet = true }
             )
     ) {
-        AccountListBody(accountEntity = accountEntity)
-    }
-}
+        Row {
+            IconBox(accountEntity = accountEntity)
+            Column {
+                Text(
+                    text = accountEntity.name,
+                    fontFamily = splineSansMedium,
+                    fontSize = fontSize,
+                    color = systemTextColor,
+                    modifier = Modifier.padding(top = paddingBetweenElements)
+                )
+                when (accountEntity.type) {
+                    AccountType.REGULAR.name -> {
+                        Text(
+                            text = accountEntity.balance.toString() + "$",
+                            color = systemTextColor,
+                            fontFamily = splineSansMedium,
+                        )
+                    }
 
-@Composable
-fun AccountListBody(
-    accountEntity: AccountEntity
-) {
-    Row {
-        IconBox(accountEntity = accountEntity)
-        Column {
-            Text(
-                text = accountEntity.name,
-                fontFamily = splineSansMedium,
-                fontSize = fontSize,
-                color = systemTextColor,
-                modifier = Modifier.padding(top = 10.dp)
-            )
-            when (accountEntity.type) {
-                AccountType.REGULAR -> {
-                    Text(
-                        text = accountEntity.balance.toString() + "$",
-                        color = systemTextColor,
-                        fontFamily = splineSansMedium,
-                    )
-                }
-                AccountType.SAVING -> {
-                    Text(
-                        text = accountEntity.balance.toString() + "$" + " out of " + "${accountEntity.target}" + "$",
-                        color = systemTextColor,
-                        fontFamily = splineSansMedium,
-                    )
-                }
-                AccountType.DEBT -> {
-                    Text(
-                        text = accountEntity.balance.toString() + "$",
-                        color = systemTextColor,
-                        fontFamily = splineSansMedium,
-                    )
+                    AccountType.SAVING.name -> {
+                        Text(
+                            text = accountEntity.balance.toString() + "$" + " out of " + "${accountEntity.target}" + "$",
+                            color = systemTextColor,
+                            fontFamily = splineSansMedium,
+                        )
+                    }
+
+                    AccountType.DEBT.name -> {
+                        Text(
+                            text = accountEntity.balance.toString() + "$",
+                            color = systemTextColor,
+                            fontFamily = splineSansMedium,
+                        )
+                    }
                 }
             }
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Text(
-                text = accountEntity.description,
-                fontFamily = splineSansLight,
-                fontStyle = FontStyle.Italic,
-                color = Color.Gray,
-                modifier = Modifier.padding(22.dp)
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    text = accountEntity.description,
+                    fontFamily = splineSansLight,
+                    fontStyle = FontStyle.Italic,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(22.dp)
+                )
+            }
         }
     }
 }
@@ -299,9 +191,7 @@ fun TypeAlertDialog(
 
     if (openDialog.value) {
         AlertDialog(
-            onDismissRequest = {
-                onDismiss()
-            },
+            onDismissRequest = { onDismiss() },
             title = { Text(text = "New Account") },
             buttons = {
                 Column(
@@ -331,3 +221,4 @@ fun TypeAlertDialog(
         )
     }
 }
+

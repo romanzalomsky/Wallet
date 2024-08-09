@@ -7,7 +7,7 @@ import com.zalomsky.wallet.domain.model.AccountEntity
 import com.zalomsky.wallet.domain.usecase.account.DeleteAccountUseCase
 import com.zalomsky.wallet.domain.usecase.account.GetAccountByIdUseCase
 import com.zalomsky.wallet.domain.usecase.account.UpdateAccountUseCase
-import com.zalomsky.wallet.features.accounts.AccountUiState
+import com.zalomsky.wallet.features.accounts.screen.AccountUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +36,7 @@ class EditAccountViewModel @Inject constructor(
                             currentState.copy(accountEntity = account)
                         }
                     }.onFailure {
-                        // todo: show message
+
                     }
             }
         }
@@ -73,7 +73,7 @@ class EditAccountViewModel @Inject constructor(
                     onSuccess()
                 }
                 .onFailure {
-                    // TODO: show message
+
                 }
         }
     }

@@ -29,3 +29,7 @@ data class AccountEntity(
     }
 }
 
+enum class AccountType {
+    REGULAR, SAVING, DEBT
+}
+

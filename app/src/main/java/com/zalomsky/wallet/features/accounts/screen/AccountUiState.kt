@@ -1,4 +1,4 @@
-package com.zalomsky.wallet.features.accounts
+package com.zalomsky.wallet.features.accounts.screen
 
 import com.zalomsky.wallet.domain.model.AccountEntity
 

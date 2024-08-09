@@ -1,4 +1,4 @@
-package com.zalomsky.wallet.features.accounts
+package com.zalomsky.wallet.features.accounts.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -34,6 +34,7 @@ import com.zalomsky.wallet.features.common.icons.transportCategoryIcon
 val fontSize: TextUnit = 15.sp
 val topAppBarFontSize: TextUnit = 20.sp
 val horizontalPaddingSize: Dp = 15.dp
+val paddingBetweenElements: Dp = 10.dp
 
 val listOfAccountsIcons = listOf(cardIcon, cardIcon1, cardIcon2, cardIcon3)
 

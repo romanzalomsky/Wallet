@@ -8,11 +8,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import androidx.navigation.navigation
 import com.zalomsky.wallet.domain.model.AccountType
-import com.zalomsky.wallet.features.accounts.AccountsScreen
-import com.zalomsky.wallet.features.accounts.addAccountScreen
-import com.zalomsky.wallet.features.accounts.editAccountScreen
-import com.zalomsky.wallet.features.accounts.navigateToAddAccountScreen
-import com.zalomsky.wallet.features.accounts.navigateToEditAccountScreen
+import com.zalomsky.wallet.features.accounts.screen.AccountsScreen
+import com.zalomsky.wallet.features.accounts.navigation.addAccountScreen
+import com.zalomsky.wallet.features.accounts.navigation.editAccountScreen
+import com.zalomsky.wallet.features.accounts.navigation.navigateToAddAccountScreen
+import com.zalomsky.wallet.features.accounts.navigation.navigateToEditAccountScreen
 import com.zalomsky.wallet.features.categories.CategoriesScreen
 import com.zalomsky.wallet.features.categories.addCategoryScreen
 import com.zalomsky.wallet.features.categories.editCategoryScreen
@@ -53,13 +53,13 @@ fun NavGraphBuilder.bottomRoutes(
     composable(HomeSections.ACCOUNTS.route) {
         AccountsScreen(
             onRegularAccountAdd = {
-                navController.navigateToAddAccountScreen(AccountType.REGULAR)
+                navController.navigateToAddAccountScreen(AccountType.REGULAR.name)
             },
             onSavingAccountAdd = {
-                navController.navigateToAddAccountScreen(AccountType.SAVING)
+                navController.navigateToAddAccountScreen(AccountType.SAVING.name)
             },
             onDebtAccountAdd = {
-                navController.navigateToAddAccountScreen(AccountType.DEBT)
+                navController.navigateToAddAccountScreen(AccountType.DEBT.name)
             },
             onAccountEdit = { accountId, accountType ->
                 navController.navigateToEditAccountScreen(id = accountId, state = accountType)
